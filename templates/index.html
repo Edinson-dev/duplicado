@@ -1,1830 +1,586 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Savia Salud Eps Contratos</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
-    rel="stylesheet">
-  <style>
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0
-    }
-
-    html,
-    body {
-      height: 100%;
-      overflow: hidden
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #f0f4f8;
-      color: #1e293b;
-      display: flex;
-      flex-direction: column;
-      font-size: 13px
-    }
-
-    /* ── TOPBAR ── */
-    .topbar {
-      height: 52px;
-      background: #0f172a;
-      display: flex;
-      align-items: center;
-      padding: 0 20px;
-      gap: 14px;
-      flex-shrink: 0
-    }
-
-    .tb-mark {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      border-radius: 9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      box-shadow: 0 0 16px #6366f140
-    }
-
-    .tb-mark svg {
-      width: 16px;
-      height: 16px;
-      fill: white
-    }
-
-    .tb-brand {
-      font-size: 15px;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -.3px
-    }
-
-    .tb-brand span {
-      color: #a78bfa
-    }
-
-    .tb-pipe {
-      width: 1px;
-      height: 20px;
-      background: #334155;
-      margin: 0 2px
-    }
-
-    .tb-mod {
-      font-size: 11px;
-      color: #64748b;
-      font-weight: 500
-    }
-
-    .tb-right {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: 10px
-    }
-
-    .tb-badge {
-      font-size: 10px;
-      font-weight: 700;
-      padding: 3px 9px;
-      border-radius: 20px;
-      letter-spacing: .4px
-    }
-
-    .tb-badge.purple {
-      background: #6366f120;
-      color: #a78bfa;
-      border: 1px solid #6366f135
-    }
-
-    .tb-user {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 20px;
-      padding: 4px 12px 4px 4px
-    }
-
-    .tb-avatar {
-      width: 24px;
-      height: 24px;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 800;
-      color: #fff
-    }
-
-    .tb-username {
-      font-size: 11px;
-      color: #94a3b8;
-      font-weight: 600
-    }
-
-    .tb-logout {
-      font-size: 10px;
-      color: #64748b;
-      text-decoration: none;
-      padding: 3px 8px;
-      border-radius: 5px;
-      border: 1px solid #334155;
-      transition: all .2s
-    }
-
-    .tb-logout:hover {
-      border-color: #ef4444;
-      color: #ef4444;
-      background: #fef2f215
-    }
-
-    .tb-live {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      color: #4ade80;
-      font-weight: 600
-    }
-
-    .tb-live-dot {
-      width: 7px;
-      height: 7px;
-      background: #4ade80;
-      border-radius: 50%;
-      box-shadow: 0 0 8px #4ade80;
-      animation: pulse 2s infinite
-    }
-
-    @keyframes pulse {
-
-      0%,
-      100% {
-        opacity: 1;
-        transform: scale(1)
-      }
-
-      50% {
-        opacity: .5;
-        transform: scale(.8)
-      }
-    }
-
-    /* ── GUIDE ── */
-    .guide {
-      display: flex;
-      align-items: center;
-      background: #fff;
-      border-bottom: 1px solid #e2e8f0;
-      padding: 0 20px;
-      flex-shrink: 0
-    }
-
-    .step-g {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 20px;
-      flex: 1;
-      position: relative;
-      transition: background .2s
-    }
-
-    .step-g:not(:last-child)::after {
-      content: '›';
-      position: absolute;
-      right: -2px;
-      font-size: 18px;
-      color: #cbd5e1;
-      font-weight: 300
-    }
-
-    .step-g.active {
-      background: #f5f3ff
-    }
-
-    .step-g.done {
-      background: #f0fdf4
-    }
-
-    .sg-num {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 800;
-      flex-shrink: 0;
-      border: 2px solid #e2e8f0;
-      color: #94a3b8;
-      background: #f8fafc;
-      transition: all .3s
-    }
-
-    .step-g.active .sg-num {
-      background: #6366f1;
-      border-color: #6366f1;
-      color: #fff;
-      box-shadow: 0 0 12px #6366f140
-    }
-
-    .step-g.done .sg-num {
-      background: #10b981;
-      border-color: #10b981;
-      color: #fff
-    }
-
-    .sg-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: #94a3b8;
-      transition: color .3s
-    }
-
-    .step-g.active .sg-title {
-      color: #6366f1
-    }
-
-    .step-g.done .sg-title {
-      color: #10b981
-    }
-
-    .sg-desc {
-      font-size: 10px;
-      color: #94a3b8;
-      margin-top: 1px
-    }
-
-    /* ── STAT BAR ── */
-    .statbar {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      background: #fff;
-      border-bottom: 1px solid #e2e8f0;
-      flex-shrink: 0
-    }
-
-    .sb {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 20px;
-      border-right: 1px solid #f1f5f9
-    }
-
-    .sb:last-child {
-      border-right: none
-    }
-
-    .sb-ico {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      flex-shrink: 0
-    }
-
-    .sb-ico.purple {
-      background: #f5f3ff;
-      border: 1.5px solid #ddd6fe
-    }
-
-    .sb-ico.red {
-      background: #fef2f2;
-      border: 1.5px solid #fecaca
-    }
-
-    .sb-ico.green {
-      background: #f0fdf4;
-      border: 1.5px solid #bbf7d0
-    }
-
-    .sb-ico.amber {
-      background: #fffbeb;
-      border: 1.5px solid #fde68a
-    }
-
-    .sb-v {
-      font-size: 20px;
-      font-weight: 800;
-      line-height: 1;
-      margin-bottom: 2px
-    }
-
-    .sb-v.purple {
-      color: #7c3aed
-    }
-
-    .sb-v.red {
-      color: #dc2626
-    }
-
-    .sb-v.green {
-      color: #16a34a
-    }
-
-    .sb-v.amber {
-      color: #d97706
-    }
-
-    .sb-l {
-      font-size: 10px;
-      color: #94a3b8;
-      font-weight: 500
-    }
-
-    /* ── WORKSPACE ── */
-    .workspace {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 300px 1fr 230px;
-      overflow: hidden
-    }
-
-    /* ── LEFT PANEL ── */
-    .lpanel {
-      background: #fff;
-      border-right: 1px solid #e2e8f0;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden
-    }
-
-    .lp-hd {
-      padding: 14px 16px 10px;
-      border-bottom: 1px solid #f1f5f9;
-      background: #fafafa
-    }
-
-    .lp-title {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .8px;
-      color: #475569;
-      display: flex;
-      align-items: center;
-      gap: 6px
-    }
-
-    .lp-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: 14px
-    }
-
-    .lp-body::-webkit-scrollbar {
-      width: 3px
-    }
-
-    .lp-body::-webkit-scrollbar-thumb {
-      background: #e2e8f0;
-      border-radius: 3px
-    }
-
-    .lp-ft {
-      padding: 12px 14px;
-      border-top: 1px solid #f1f5f9;
-      background: #fafafa
-    }
-
-    /* ── DROP ZONE ── */
-    .drop-zone {
-      border: 2px dashed #e2e8f0;
-      border-radius: 10px;
-      padding: 22px 16px;
-      text-align: center;
-      cursor: pointer;
-      transition: all .2s;
-      background: #fafafa;
-      margin-bottom: 10px
-    }
-
-    .drop-zone:hover,
-    .drop-zone.drag-over {
-      border-color: #7c3aed;
-      background: #f5f3ff;
-      border-style: solid
-    }
-
-    .drop-zone.drag-over .dz-icon {
-      transform: scale(1.15)
-    }
-
-    .dz-icon {
-      font-size: 28px;
-      margin-bottom: 8px;
-      transition: transform .2s;
-      display: block
-    }
-
-    .dz-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: #475569;
-      margin-bottom: 3px
-    }
-
-    .dz-sub {
-      font-size: 10px;
-      color: #94a3b8
-    }
-
-    .dz-sub b {
-      color: #7c3aed;
-      cursor: pointer
-    }
-
-    .dz-sub b:hover {
-      text-decoration: underline
-    }
-
-    .dz-formats {
-      display: flex;
-      gap: 4px;
-      justify-content: center;
-      margin-top: 8px;
-      flex-wrap: wrap
-    }
-
-    .dz-fmt {
-      font-size: 9px;
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 3px
-    }
-
-    .dz-fmt.csv {
-      background: #d1fae5;
-      color: #065f46
-    }
-
-    .dz-fmt.xlsx {
-      background: #dbeafe;
-      color: #1e40af
-    }
-
-    .dz-fmt.txt {
-      background: #f1f5f9;
-      color: #64748b
-    }
-
-    /* ── FIELDS ── */
-    .field-lbl {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .6px;
-      color: #94a3b8;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 5px
-    }
-
-    .sep {
-      height: 1px;
-      background: #f1f5f9;
-      margin: 12px 0
-    }
-
-    .fl-hd {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px
-    }
-
-    .fl-cnt {
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 4px;
-      background: #f5f3ff;
-      color: #7c3aed;
-      border: 1px solid #ddd6fe
-    }
-
-    .fl-acts {
-      display: flex;
-      gap: 4px
-    }
-
-    .files {
-      display: flex;
-      flex-direction: column;
-      gap: 3px
-    }
-
-    .fi {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 10px;
-      border: 1.5px solid #f1f5f9;
-      border-radius: 7px;
-      cursor: pointer;
-      transition: all .12s;
-      background: #fafafa;
-      user-select: none
-    }
-
-    .fi:hover {
-      border-color: #ddd6fe;
-      background: #faf5ff
-    }
-
-    .fi.sel {
-      border-color: #a78bfa;
-      background: #f5f3ff
-    }
-
-    .chk {
-      width: 15px;
-      height: 15px;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #fff;
-      flex-shrink: 0;
-      transition: all .12s
-    }
-
-    .fi.sel .chk {
-      background: #7c3aed;
-      border-color: #7c3aed
-    }
-
-    .chkm {
-      display: none
-    }
-
-    .fi.sel .chkm {
-      display: block
-    }
-
-    .fext {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      font-weight: 700;
-      padding: 1px 5px;
-      border-radius: 3px;
-      flex-shrink: 0
-    }
-
-    .fext.csv {
-      background: #d1fae5;
-      color: #065f46
-    }
-
-    .fext.xlsx,
-    .fext.xls {
-      background: #dbeafe;
-      color: #1e40af
-    }
-
-    .fext.txt {
-      background: #f1f5f9;
-      color: #64748b
-    }
-
-    .fname {
-      font-size: 11px;
-      color: #334155;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-weight: 500;
-      flex: 1
-    }
-
-    .fi.sel .fname {
-      color: #6d28d9;
-      font-weight: 600
-    }
-
-    .empty-ph {
-      text-align: center;
-      padding: 28px 16px;
-      border: 1.5px dashed #e2e8f0;
-      border-radius: 8px;
-      color: #94a3b8;
-      font-size: 11px;
-      background: #fafafa
-    }
-
-    .empty-ico {
-      font-size: 24px;
-      margin-bottom: 8px;
-      opacity: .4
-    }
-
-    /* ── BUTTONS ── */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 8px 14px;
-      border-radius: 7px;
-      font-family: 'Inter', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      border: none;
-      transition: all .15s;
-      white-space: nowrap
-    }
-
-    .btn-purple {
-      background: #7c3aed;
-      color: #fff;
-      box-shadow: 0 2px 8px #7c3aed30
-    }
-
-    .btn-purple:hover {
-      background: #6d28d9;
-      box-shadow: 0 4px 14px #7c3aed45;
-      transform: translateY(-1px)
-    }
-
-    .btn-purple:disabled {
-      opacity: .4;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none
-    }
-
-    .btn-green {
-      background: #10b981;
-      color: #fff;
-      box-shadow: 0 2px 8px #10b98130
-    }
-
-    .btn-green:hover {
-      background: #059669;
-      transform: translateY(-1px)
-    }
-
-    .btn-outline {
-      background: #fff;
-      color: #475569;
-      border: 1.5px solid #e2e8f0
-    }
-
-    .btn-outline:hover {
-      border-color: #7c3aed;
-      color: #7c3aed;
-      background: #faf5ff
-    }
-
-    .btn-red {
-      background: #fff;
-      color: #ef4444;
-      border: 1.5px solid #fecaca
-    }
-
-    .btn-red:hover {
-      background: #fef2f2;
-      border-color: #ef4444
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: #94a3b8;
-      border: 1.5px solid #f1f5f9;
-      font-size: 10px;
-      padding: 5px 10px
-    }
-
-    .btn-ghost:hover {
-      background: #f8fafc;
-      color: #475569
-    }
-
-    .btn-full {
-      width: 100%
-    }
-
-    .btn-sm {
-      padding: 6px 10px;
-      font-size: 11px;
-      border-radius: 6px
-    }
-
-    /* ── CENTER ── */
-    .cpanel {
-      background: #f0f4f8;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden
-    }
-
-    .cp-hd {
-      padding: 12px 20px;
-      border-bottom: 1px solid #e2e8f0;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0
-    }
-
-    .cp-title {
-      font-size: 14px;
-      font-weight: 800;
-      color: #0f172a
-    }
-
-    .cp-title span {
-      color: #7c3aed
-    }
-
-    .cp-sub {
-      font-size: 10px;
-      color: #94a3b8;
-      margin-top: 2px
-    }
-
-    .cp-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px
-    }
-
-    .cp-body::-webkit-scrollbar {
-      width: 3px
-    }
-
-    .cp-body::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 3px
-    }
-
-    /* ── PROGRESS ── */
-    .prog {
-      background: #fff;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 16px 18px;
-      display: none;
-      box-shadow: 0 4px 20px #7c3aed12
-    }
-
-    .prog.show {
-      display: block;
-      animation: su .25s ease
-    }
-
-    @keyframes su {
-      from {
-        opacity: 0;
-        transform: translateY(-6px)
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0)
-      }
-    }
-
-    .prog-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px
-    }
-
-    .prog-lbl {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      font-weight: 700;
-      color: #0f172a
-    }
-
-    .prog-spin {
-      width: 14px;
-      height: 14px;
-      border: 2.5px solid #f0f4f8;
-      border-top-color: #7c3aed;
-      border-radius: 50%;
-      animation: spin .6s linear infinite
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg)
-      }
-    }
-
-    .prog-pct {
-      font-size: 24px;
-      font-weight: 800;
-      color: #7c3aed;
-      font-family: 'JetBrains Mono', monospace
-    }
-
-    .prog-track {
-      height: 8px;
-      background: #f0f4f8;
-      border-radius: 99px;
-      overflow: hidden;
-      margin-bottom: 14px
-    }
-
-    .prog-bar {
-      height: 100%;
-      background: linear-gradient(90deg, #7c3aed, #a78bfa, #6366f1);
-      border-radius: 99px;
-      width: 0%;
-      transition: width .45s cubic-bezier(.4, 0, .2, 1)
-    }
-
-    .prog-steps {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px
-    }
-
-    .ps {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 10px;
-      border: 1.5px solid #f1f5f9;
-      border-radius: 7px;
-      font-size: 11px;
-      color: #94a3b8;
-      font-weight: 600;
-      transition: all .3s;
-      background: #fafafa
-    }
-
-    .ps.on {
-      border-color: #a78bfa;
-      background: #f5f3ff;
-      color: #7c3aed
-    }
-
-    .ps.done {
-      border-color: #bbf7d0;
-      background: #f0fdf4;
-      color: #16a34a
-    }
-
-    .ps-ico {
-      font-size: 14px;
-      flex-shrink: 0
-    }
-
-    /* ── METRICS ── */
-    .met-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px
-    }
-
-    .mc {
-      background: #fff;
-      border: 1.5px solid #f1f5f9;
-      border-radius: 10px;
-      padding: 14px 16px;
-      animation: cu .4s ease both;
-      position: relative;
-      overflow: hidden
-    }
-
-    .mc::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--c)
-    }
-
-    .mc.purple {
-      --c: linear-gradient(90deg, #7c3aed, #a78bfa)
-    }
-
-    .mc.red {
-      --c: linear-gradient(90deg, #ef4444, #f87171)
-    }
-
-    .mc.green {
-      --c: linear-gradient(90deg, #10b981, #34d399)
-    }
-
-    @keyframes cu {
-      from {
-        opacity: 0;
-        transform: translateY(10px)
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0)
-      }
-    }
-
-    .mc-ico {
-      font-size: 20px;
-      margin-bottom: 8px
-    }
-
-    .mc-v {
-      font-size: 26px;
-      font-weight: 800;
-      line-height: 1;
-      margin-bottom: 3px
-    }
-
-    .mc-v.purple {
-      color: #7c3aed
-    }
-
-    .mc-v.red {
-      color: #ef4444
-    }
-
-    .mc-v.green {
-      color: #10b981
-    }
-
-    .mc-l {
-      font-size: 10px;
-      color: #94a3b8;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: .4px
-    }
-
-    /* ── RESULT CARD ── */
-    .rc {
-      background: #fff;
-      border: 1.5px solid #f1f5f9;
-      border-radius: 10px;
-      padding: 14px 16px;
-      animation: cu .35s ease both
-    }
-
-    .rc.ok {
-      border-left: 4px solid #10b981
-    }
-
-    .rc.err {
-      border-left: 4px solid #ef4444
-    }
-
-    .rc-hd {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px
-    }
-
-    .rc-ico {
-      width: 30px;
-      height: 30px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      flex-shrink: 0
-    }
-
-    .rc-ico.ok {
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0
-    }
-
-    .rc-ico.err {
-      background: #fef2f2;
-      border: 1px solid #fecaca
-    }
-
-    .rc-name {
-      font-size: 12px;
-      font-weight: 700;
-      color: #0f172a;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap
-    }
-
-    .rc-contrato {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 9px;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 4px;
-      background: #f5f3ff;
-      color: #7c3aed;
-      border: 1px solid #ddd6fe;
-      margin-bottom: 8px;
-      font-family: 'JetBrains Mono', monospace
-    }
-
-    .rc-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px
-    }
-
-    .rs {
-      background: #f8fafc;
-      border: 1px solid #f1f5f9;
-      border-radius: 6px;
-      padding: 8px 10px;
-      text-align: center
-    }
-
-    .rs-v {
-      font-size: 16px;
-      font-weight: 800;
-      line-height: 1;
-      margin-bottom: 3px
-    }
-
-    .rs-v.b {
-      color: #3b82f6
-    }
-
-    .rs-v.r {
-      color: #ef4444
-    }
-
-    .rs-v.g {
-      color: #10b981
-    }
-
-    .rs-l {
-      font-size: 9px;
-      color: #94a3b8;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: .3px
-    }
-
-    .rc-path {
-      margin-top: 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      color: #94a3b8;
-      background: #f8fafc;
-      border: 1px solid #f1f5f9;
-      padding: 6px 9px;
-      border-radius: 5px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap
-    }
-
-    .rc-path.dup {
-      background: #fef2f2;
-      border-color: #fecaca;
-      color: #b91c1c;
-      margin-top: 4px
-    }
-
-    .err-box {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: #dc2626;
-      background: #fef2f2;
-      border: 1px solid #fecaca;
-      padding: 8px 10px;
-      border-radius: 6px;
-      white-space: pre-wrap;
-      word-break: break-all
-    }
-
-    /* ── DOWNLOAD BANNER ── */
-    .dl-banner {
-      background: linear-gradient(135deg, #f5f3ff, #ede9fe);
-      border: 1.5px solid #ddd6fe;
-      border-radius: 10px;
-      padding: 14px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      animation: cu .3s ease
-    }
-
-    .dl-banner-txt .dl-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: #4c1d95
-    }
-
-    .dl-banner-txt .dl-sub {
-      font-size: 10px;
-      color: #7c3aed;
-      margin-top: 2px
-    }
-
-    .dl-btns {
-      display: flex;
-      gap: 8px;
-      flex-shrink: 0
-    }
-
-    /* ── WELCOME ── */
-    .welcome {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      gap: 12px;
-      padding: 30px
-    }
-
-    .w-art {
-      width: 72px;
-      height: 72px;
-      background: linear-gradient(135deg, #f5f3ff, #ede9fe);
-      border: 2px solid #ddd6fe;
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-      margin-bottom: 4px;
-      box-shadow: 0 8px 24px #7c3aed15
-    }
-
-    .w-h {
-      font-size: 18px;
-      font-weight: 800;
-      color: #0f172a
-    }
-
-    .w-p {
-      font-size: 12px;
-      color: #94a3b8;
-      max-width: 280px;
-      line-height: 1.7
-    }
-
-    .w-steps {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 4px
-    }
-
-    .w-step {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: #fff;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 7px;
-      padding: 7px 12px;
-      font-size: 11px;
-      color: #475569;
-      font-weight: 600;
-      box-shadow: 0 1px 4px #0000000a
-    }
-
-    .w-n {
-      width: 18px;
-      height: 18px;
-      background: #7c3aed;
-      color: #fff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 9px;
-      font-weight: 800;
-      flex-shrink: 0
-    }
-
-    /* ── HISTORY ── */
-    .hpanel {
-      background: #fff;
-      border-left: 1px solid #e2e8f0;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden
-    }
-
-    .hp-hd {
-      padding: 14px 14px 10px;
-      border-bottom: 1px solid #f1f5f9;
-      background: #fafafa
-    }
-
-    .hp-title {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .8px;
-      color: #475569
-    }
-
-    .hp-sub {
-      font-size: 10px;
-      color: #94a3b8;
-      margin-top: 2px
-    }
-
-    .hp-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px
-    }
-
-    .hp-body::-webkit-scrollbar {
-      width: 3px
-    }
-
-    .hp-body::-webkit-scrollbar-thumb {
-      background: #e2e8f0;
-      border-radius: 3px
-    }
-
-    .hp-ft {
-      padding: 10px;
-      border-top: 1px solid #f1f5f9;
-      background: #fafafa
-    }
-
-    .hi {
-      background: #fafafa;
-      border: 1px solid #f1f5f9;
-      border-left: 3px solid #10b981;
-      border-radius: 6px;
-      padding: 8px 10px;
-      animation: cu .25s ease
-    }
-
-    .hi-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 5px
-    }
-
-    .hi-n {
-      font-size: 10px;
-      font-weight: 700;
-      color: #334155;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      max-width: 140px
-    }
-
-    .hi-t {
-      font-size: 9px;
-      color: #94a3b8;
-      font-family: 'JetBrains Mono', monospace
-    }
-
-    .hi-chips {
-      display: flex;
-      gap: 4px;
-      flex-wrap: wrap
-    }
-
-    .hc {
-      font-size: 9px;
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 4px
-    }
-
-    .hc.g {
-      background: #dcfce7;
-      color: #166534
-    }
-
-    .hc.r {
-      background: #fee2e2;
-      color: #991b1b
-    }
-
-    .hp-empty {
-      text-align: center;
-      padding: 28px 10px;
-      font-size: 11px;
-      color: #94a3b8
-    }
-
-    /* ── TOAST ── */
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 999;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 16px;
-      background: #0f172a;
-      color: #fff;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 600;
-      box-shadow: 0 8px 30px #0000004d;
-      transform: translateY(80px);
-      opacity: 0;
-      transition: all .4s cubic-bezier(.34, 1.56, .64, 1);
-      max-width: 320px
-    }
-
-    .toast.show {
-      transform: translateY(0);
-      opacity: 1
-    }
-
-    .toast.success {
-      border-left: 4px solid #10b981
-    }
-
-    .toast.error {
-      border-left: 4px solid #ef4444
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DataCleanse Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Inter',sans-serif;background:#f0f4f8;color:#1e293b;display:flex;flex-direction:column;font-size:13px}
+
+/* ── TOPBAR ── */
+.topbar{height:52px;background:#0f172a;display:flex;align-items:center;padding:0 20px;gap:14px;flex-shrink:0}
+.tb-mark{width:32px;height:32px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 16px #6366f140}
+.tb-mark svg{width:16px;height:16px;fill:white}
+.tb-brand{font-size:15px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.tb-brand span{color:#a78bfa}
+.tb-pipe{width:1px;height:20px;background:#334155;margin:0 2px}
+.tb-mod{font-size:11px;color:#64748b;font-weight:500}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.tb-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.4px}
+.tb-badge.purple{background:#6366f120;color:#a78bfa;border:1px solid #6366f135}
+.tb-user{display:flex;align-items:center;gap:7px;background:#1e293b;border:1px solid #334155;border-radius:20px;padding:4px 12px 4px 4px}
+.tb-avatar{width:24px;height:24px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff}
+.tb-username{font-size:11px;color:#94a3b8;font-weight:600}
+.tb-logout{font-size:10px;color:#64748b;text-decoration:none;padding:3px 8px;border-radius:5px;border:1px solid #334155;transition:all .2s}
+.tb-logout:hover{border-color:#ef4444;color:#ef4444;background:#fef2f215}
+.tb-live{display:flex;align-items:center;gap:6px;font-size:11px;color:#4ade80;font-weight:600}
+.tb-live-dot{width:7px;height:7px;background:#4ade80;border-radius:50%;box-shadow:0 0 8px #4ade80;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+
+/* ── GUIDE ── */
+.guide{display:flex;align-items:center;background:#fff;border-bottom:1px solid #e2e8f0;padding:0 20px;flex-shrink:0}
+.step-g{display:flex;align-items:center;gap:10px;padding:10px 20px;flex:1;position:relative;transition:background .2s}
+.step-g:not(:last-child)::after{content:'›';position:absolute;right:-2px;font-size:18px;color:#cbd5e1;font-weight:300}
+.step-g.active{background:#f5f3ff}
+.step-g.done{background:#f0fdf4}
+.sg-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;border:2px solid #e2e8f0;color:#94a3b8;background:#f8fafc;transition:all .3s}
+.step-g.active .sg-num{background:#6366f1;border-color:#6366f1;color:#fff;box-shadow:0 0 12px #6366f140}
+.step-g.done .sg-num{background:#10b981;border-color:#10b981;color:#fff}
+.sg-title{font-size:12px;font-weight:700;color:#94a3b8;transition:color .3s}
+.step-g.active .sg-title{color:#6366f1}
+.step-g.done .sg-title{color:#10b981}
+.sg-desc{font-size:10px;color:#94a3b8;margin-top:1px}
+
+/* ── STAT BAR ── */
+.statbar{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-bottom:1px solid #e2e8f0;flex-shrink:0}
+.sb{display:flex;align-items:center;gap:10px;padding:10px 20px;border-right:1px solid #f1f5f9}
+.sb:last-child{border-right:none}
+.sb-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.sb-ico.purple{background:#f5f3ff;border:1.5px solid #ddd6fe}
+.sb-ico.red{background:#fef2f2;border:1.5px solid #fecaca}
+.sb-ico.green{background:#f0fdf4;border:1.5px solid #bbf7d0}
+.sb-ico.amber{background:#fffbeb;border:1.5px solid #fde68a}
+.sb-v{font-size:20px;font-weight:800;line-height:1;margin-bottom:2px}
+.sb-v.purple{color:#7c3aed}.sb-v.red{color:#dc2626}.sb-v.green{color:#16a34a}.sb-v.amber{color:#d97706}
+.sb-l{font-size:10px;color:#94a3b8;font-weight:500}
+
+/* ── WORKSPACE ── */
+.workspace{flex:1;display:grid;grid-template-columns:300px 1fr 230px;overflow:hidden}
+
+/* ── LEFT PANEL ── */
+.lpanel{background:#fff;border-right:1px solid #e2e8f0;display:flex;flex-direction:column;overflow:hidden}
+.lp-hd{padding:14px 16px 10px;border-bottom:1px solid #f1f5f9;background:#fafafa}
+.lp-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#475569;display:flex;align-items:center;gap:6px}
+.lp-body{flex:1;overflow-y:auto;padding:14px}
+.lp-body::-webkit-scrollbar{width:3px}
+.lp-body::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:3px}
+.lp-ft{padding:12px 14px;border-top:1px solid #f1f5f9;background:#fafafa}
+
+/* ── DROP ZONE ── */
+.drop-zone{border:2px dashed #e2e8f0;border-radius:10px;padding:22px 16px;text-align:center;cursor:pointer;transition:all .2s;background:#fafafa;margin-bottom:10px}
+.drop-zone:hover,.drop-zone.drag-over{border-color:#7c3aed;background:#f5f3ff;border-style:solid}
+.drop-zone.drag-over .dz-icon{transform:scale(1.15)}
+.dz-icon{font-size:28px;margin-bottom:8px;transition:transform .2s;display:block}
+.dz-title{font-size:12px;font-weight:700;color:#475569;margin-bottom:3px}
+.dz-sub{font-size:10px;color:#94a3b8}
+.dz-sub b{color:#7c3aed;cursor:pointer}
+.dz-sub b:hover{text-decoration:underline}
+.dz-formats{display:flex;gap:4px;justify-content:center;margin-top:8px;flex-wrap:wrap}
+.dz-fmt{font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px}
+.dz-fmt.csv{background:#d1fae5;color:#065f46}
+.dz-fmt.xlsx{background:#dbeafe;color:#1e40af}
+.dz-fmt.txt{background:#f1f5f9;color:#64748b}
+
+/* ── FIELDS ── */
+.field-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#94a3b8;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.sep{height:1px;background:#f1f5f9;margin:12px 0}
+.fl-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.fl-cnt{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;background:#f5f3ff;color:#7c3aed;border:1px solid #ddd6fe}
+.fl-acts{display:flex;gap:4px}
+.files{display:flex;flex-direction:column;gap:3px}
+.fi{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1.5px solid #f1f5f9;border-radius:7px;cursor:pointer;transition:all .12s;background:#fafafa;user-select:none}
+.fi:hover{border-color:#ddd6fe;background:#faf5ff}
+.fi.sel{border-color:#a78bfa;background:#f5f3ff}
+.chk{width:15px;height:15px;border:1.5px solid #e2e8f0;border-radius:4px;display:flex;align-items:center;justify-content:center;background:#fff;flex-shrink:0;transition:all .12s}
+.fi.sel .chk{background:#7c3aed;border-color:#7c3aed}
+.chkm{display:none}
+.fi.sel .chkm{display:block}
+.fext{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;flex-shrink:0}
+.fext.csv{background:#d1fae5;color:#065f46}
+.fext.xlsx,.fext.xls{background:#dbeafe;color:#1e40af}
+.fext.txt{background:#f1f5f9;color:#64748b}
+.fname{font-size:11px;color:#334155;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500;flex:1}
+.fi.sel .fname{color:#6d28d9;font-weight:600}
+.empty-ph{text-align:center;padding:28px 16px;border:1.5px dashed #e2e8f0;border-radius:8px;color:#94a3b8;font-size:11px;background:#fafafa}
+.empty-ico{font-size:24px;margin-bottom:8px;opacity:.4}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 14px;border-radius:7px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all .15s;white-space:nowrap}
+.btn-purple{background:#7c3aed;color:#fff;box-shadow:0 2px 8px #7c3aed30}
+.btn-purple:hover{background:#6d28d9;box-shadow:0 4px 14px #7c3aed45;transform:translateY(-1px)}
+.btn-purple:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-green{background:#10b981;color:#fff;box-shadow:0 2px 8px #10b98130}
+.btn-green:hover{background:#059669;transform:translateY(-1px)}
+.btn-outline{background:#fff;color:#475569;border:1.5px solid #e2e8f0}
+.btn-outline:hover{border-color:#7c3aed;color:#7c3aed;background:#faf5ff}
+.btn-red{background:#fff;color:#ef4444;border:1.5px solid #fecaca}
+.btn-red:hover{background:#fef2f2;border-color:#ef4444}
+.btn-ghost{background:transparent;color:#94a3b8;border:1.5px solid #f1f5f9;font-size:10px;padding:5px 10px}
+.btn-ghost:hover{background:#f8fafc;color:#475569}
+.btn-full{width:100%}
+.btn-sm{padding:6px 10px;font-size:11px;border-radius:6px}
+
+/* ── CENTER ── */
+.cpanel{background:#f0f4f8;display:flex;flex-direction:column;overflow:hidden}
+.cp-hd{padding:12px 20px;border-bottom:1px solid #e2e8f0;background:#fff;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.cp-title{font-size:14px;font-weight:800;color:#0f172a}
+.cp-title span{color:#7c3aed}
+.cp-sub{font-size:10px;color:#94a3b8;margin-top:2px}
+.cp-body{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px}
+.cp-body::-webkit-scrollbar{width:3px}
+.cp-body::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px}
+
+/* ── PROGRESS ── */
+.prog{background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px 18px;display:none;box-shadow:0 4px 20px #7c3aed12}
+.prog.show{display:block;animation:su .25s ease}
+@keyframes su{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.prog-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.prog-lbl{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#0f172a}
+.prog-spin{width:14px;height:14px;border:2.5px solid #f0f4f8;border-top-color:#7c3aed;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.prog-pct{font-size:24px;font-weight:800;color:#7c3aed;font-family:'JetBrains Mono',monospace}
+.prog-track{height:8px;background:#f0f4f8;border-radius:99px;overflow:hidden;margin-bottom:14px}
+.prog-bar{height:100%;background:linear-gradient(90deg,#7c3aed,#a78bfa,#6366f1);border-radius:99px;width:0%;transition:width .45s cubic-bezier(.4,0,.2,1)}
+.prog-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ps{display:flex;align-items:center;gap:6px;padding:8px 10px;border:1.5px solid #f1f5f9;border-radius:7px;font-size:11px;color:#94a3b8;font-weight:600;transition:all .3s;background:#fafafa}
+.ps.on{border-color:#a78bfa;background:#f5f3ff;color:#7c3aed}
+.ps.done{border-color:#bbf7d0;background:#f0fdf4;color:#16a34a}
+.ps-ico{font-size:14px;flex-shrink:0}
+
+/* ── METRICS ── */
+.met-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.mc{background:#fff;border:1.5px solid #f1f5f9;border-radius:10px;padding:14px 16px;animation:cu .4s ease both;position:relative;overflow:hidden}
+.mc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--c)}
+.mc.purple{--c:linear-gradient(90deg,#7c3aed,#a78bfa)}
+.mc.red{--c:linear-gradient(90deg,#ef4444,#f87171)}
+.mc.green{--c:linear-gradient(90deg,#10b981,#34d399)}
+@keyframes cu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.mc-ico{font-size:20px;margin-bottom:8px}
+.mc-v{font-size:26px;font-weight:800;line-height:1;margin-bottom:3px}
+.mc-v.purple{color:#7c3aed}.mc-v.red{color:#ef4444}.mc-v.green{color:#10b981}
+.mc-l{font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+
+/* ── RESULT CARD ── */
+.rc{background:#fff;border:1.5px solid #f1f5f9;border-radius:10px;padding:14px 16px;animation:cu .35s ease both}
+.rc.ok{border-left:4px solid #10b981}
+.rc.err{border-left:4px solid #ef4444}
+.rc-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.rc-ico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.rc-ico.ok{background:#f0fdf4;border:1px solid #bbf7d0}
+.rc-ico.err{background:#fef2f2;border:1px solid #fecaca}
+.rc-name{font-size:12px;font-weight:700;color:#0f172a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rc-contrato{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;background:#f5f3ff;color:#7c3aed;border:1px solid #ddd6fe;margin-bottom:8px;font-family:'JetBrains Mono',monospace}
+.rc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.rs{background:#f8fafc;border:1px solid #f1f5f9;border-radius:6px;padding:8px 10px;text-align:center}
+.rs-v{font-size:16px;font-weight:800;line-height:1;margin-bottom:3px}
+.rs-v.b{color:#3b82f6}.rs-v.r{color:#ef4444}.rs-v.g{color:#10b981}
+.rs-l{font-size:9px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.rc-path{margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:9px;color:#94a3b8;background:#f8fafc;border:1px solid #f1f5f9;padding:6px 9px;border-radius:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rc-path.dup{background:#fef2f2;border-color:#fecaca;color:#b91c1c;margin-top:4px}
+.err-box{font-family:'JetBrains Mono',monospace;font-size:10px;color:#dc2626;background:#fef2f2;border:1px solid #fecaca;padding:8px 10px;border-radius:6px;white-space:pre-wrap;word-break:break-all}
+
+/* ── DOWNLOAD BANNER ── */
+.dl-banner{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:1.5px solid #ddd6fe;border-radius:10px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;animation:cu .3s ease}
+.dl-banner-txt .dl-title{font-size:13px;font-weight:700;color:#4c1d95}
+.dl-banner-txt .dl-sub{font-size:10px;color:#7c3aed;margin-top:2px}
+.dl-btns{display:flex;gap:8px;flex-shrink:0}
+
+/* ── WELCOME ── */
+.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;padding:30px}
+.w-art{width:72px;height:72px;background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:2px solid #ddd6fe;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:4px;box-shadow:0 8px 24px #7c3aed15}
+.w-h{font-size:18px;font-weight:800;color:#0f172a}
+.w-p{font-size:12px;color:#94a3b8;max-width:280px;line-height:1.7}
+.w-steps{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+.w-step{display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid #e2e8f0;border-radius:7px;padding:7px 12px;font-size:11px;color:#475569;font-weight:600;box-shadow:0 1px 4px #0000000a}
+.w-n{width:18px;height:18px;background:#7c3aed;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0}
+
+/* ── HISTORY ── */
+.hpanel{background:#fff;border-left:1px solid #e2e8f0;display:flex;flex-direction:column;overflow:hidden}
+.hp-hd{padding:14px 14px 10px;border-bottom:1px solid #f1f5f9;background:#fafafa}
+.hp-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#475569}
+.hp-sub{font-size:10px;color:#94a3b8;margin-top:2px}
+.hp-body{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px}
+.hp-body::-webkit-scrollbar{width:3px}
+.hp-body::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:3px}
+.hp-ft{padding:10px;border-top:1px solid #f1f5f9;background:#fafafa}
+.hi{background:#fafafa;border:1px solid #f1f5f9;border-left:3px solid #10b981;border-radius:6px;padding:8px 10px;animation:cu .25s ease}
+.hi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.hi-n{font-size:10px;font-weight:700;color:#334155;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:140px}
+.hi-t{font-size:9px;color:#94a3b8;font-family:'JetBrains Mono',monospace}
+.hi-chips{display:flex;gap:4px;flex-wrap:wrap}
+.hc{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px}
+.hc.g{background:#dcfce7;color:#166534}
+.hc.r{background:#fee2e2;color:#991b1b}
+.hp-empty{text-align:center;padding:28px 10px;font-size:11px;color:#94a3b8}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:20px;right:20px;z-index:999;display:flex;align-items:center;gap:10px;padding:12px 16px;background:#0f172a;color:#fff;border-radius:10px;font-size:12px;font-weight:600;box-shadow:0 8px 30px #0000004d;transform:translateY(80px);opacity:0;transition:all .4s cubic-bezier(.34,1.56,.64,1);max-width:320px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{border-left:4px solid #10b981}
+.toast.error{border-left:4px solid #ef4444}
+</style>
 </head>
-
 <body>
 
-  <!-- TOPBAR -->
-  <header class="topbar">
-    <div class="tb-mark"><svg viewBox="0 0 24 24">
-        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-      </svg></div>
-    <div class="tb-brand">Savia Salud Eps <span> Duplicados</span></div>
-    <div class="tb-pipe"></div>
-    <div class="tb-mod">Eliminación de Duplicados Contratos</div>
-    <div class="tb-right">
-      <span class="tb-badge purple">EMPRESARIAL</span>
-      <div class="tb-user">
-        <div class="tb-avatar">{{ usuario[0]|upper }}</div>
-        <span class="tb-username">{{ usuario }}</span>
-      </div>
-      <a href="/logout" class="tb-logout">Salir</a>
-      <div class="tb-live">
-        <div class="tb-live-dot"></div>Activo
-      </div>
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="tb-mark"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+  <div class="tb-brand">DataCleanse<span>Pro</span></div>
+  <div class="tb-pipe"></div>
+  <div class="tb-mod">Módulo de Eliminación de Duplicados</div>
+  <div class="tb-right">
+    <span class="tb-badge purple">ENTERPRISE</span>
+    <div class="tb-user">
+      <div class="tb-avatar">{{ usuario[0]|upper }}</div>
+      <span class="tb-username">{{ usuario }}</span>
     </div>
-  </header>
+    <a href="/logout" class="tb-logout">Salir</a>
+    <div class="tb-live"><div class="tb-live-dot"></div>Activo</div>
+  </div>
+</header>
 
-  <!-- GUIDE -->
-  <div class="guide">
-    <div class="step-g active" id="sg1">
-      <div class="sg-num">1</div>
+<!-- GUIDE -->
+<div class="guide">
+  <div class="step-g active" id="sg1"><div class="sg-num">1</div><div><div class="sg-title">📂 Subir archivos</div><div class="sg-desc">Arrastra o selecciona tus archivos</div></div></div>
+  <div class="step-g" id="sg2"><div class="sg-num">2</div><div><div class="sg-title">☑️ Seleccionar</div><div class="sg-desc">Elige los archivos a procesar</div></div></div>
+  <div class="step-g" id="sg3"><div class="sg-num">3</div><div><div class="sg-title">⚡ Procesar</div><div class="sg-desc">Elimina duplicados automáticamente</div></div></div>
+  <div class="step-g" id="sg4"><div class="sg-num">4</div><div><div class="sg-title">⬇️ Descargar</div><div class="sg-desc">Descarga tus archivos limpios</div></div></div>
+</div>
+
+<!-- STAT BAR -->
+<div class="statbar">
+  <div class="sb"><div class="sb-ico purple">📁</div><div><div class="sb-v purple" id="s-p">0</div><div class="sb-l">Archivos procesados</div></div></div>
+  <div class="sb"><div class="sb-ico red">🗑️</div><div><div class="sb-v red" id="s-d">0</div><div class="sb-l">Duplicados eliminados</div></div></div>
+  <div class="sb"><div class="sb-ico green">✅</div><div><div class="sb-v green" id="s-f">0</div><div class="sb-l">Filas resultantes</div></div></div>
+  <div class="sb"><div class="sb-ico amber">⏱️</div><div><div class="sb-v amber" id="s-t">—</div><div class="sb-l">Último proceso</div></div></div>
+</div>
+
+<!-- WORKSPACE -->
+<div class="workspace">
+
+  <!-- LEFT -->
+  <aside class="lpanel">
+    <div class="lp-hd"><div class="lp-title">⚙️ Archivos</div></div>
+    <div class="lp-body">
+
+      <div class="drop-zone" id="drop-zone"
+           ondragover="dragOver(event)" ondragleave="dragLeave(event)"
+           ondrop="dropFiles(event)" onclick="document.getElementById('file-input').click()">
+        <span class="dz-icon">📂</span>
+        <div class="dz-title">Arrastra archivos aquí</div>
+        <div class="dz-sub">o <b onclick="event.stopPropagation();document.getElementById('file-input').click()">selecciona desde tu equipo</b></div>
+        <div class="dz-formats">
+          <span class="dz-fmt csv">CSV</span>
+          <span class="dz-fmt xlsx">XLSX</span>
+          <span class="dz-fmt xlsx">XLS</span>
+          <span class="dz-fmt txt">TXT</span>
+        </div>
+      </div>
+      <input type="file" id="file-input" multiple accept=".csv,.xlsx,.xls,.txt,.xlsm" style="display:none" onchange="filesFromInput(event)">
+
+      <div class="sep"></div>
+
+      <div class="fl-hd">
+        <div class="field-lbl" style="margin-bottom:0">📄 Archivos disponibles</div>
+        <div style="display:flex;align-items:center;gap:4px">
+          <span class="fl-cnt" id="fl-cnt" style="display:none">0</span>
+          <div class="fl-acts" id="fl-acts" style="display:none">
+            <button class="btn btn-ghost" onclick="selectAll()">Todos</button>
+            <button class="btn btn-ghost" onclick="selectNone()">Ninguno</button>
+          </div>
+        </div>
+      </div>
+      <div class="files" id="files">
+        <div class="empty-ph"><div class="empty-ico">📂</div>Sube archivos para comenzar</div>
+      </div>
+
+    </div>
+    <div class="lp-ft">
+      <button class="btn btn-purple btn-full" id="btn-run" onclick="procesar()" disabled>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Ejecutar proceso
+      </button>
+    </div>
+  </aside>
+
+  <!-- CENTER -->
+  <div class="cpanel">
+    <div class="cp-hd">
       <div>
-        <div class="sg-title">📂 Subir archivos</div>
-        <div class="sg-desc">Arrastra o selecciona tus archivos</div>
+        <div class="cp-title">Panel de <span>Resultados</span></div>
+        <div class="cp-sub">Tus archivos se procesan en tu espacio privado</div>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <button class="btn btn-ghost" id="btn-clear" onclick="limpiarR()" style="display:none">🔄 Limpiar</button>
       </div>
     </div>
-    <div class="step-g" id="sg2">
-      <div class="sg-num">2</div>
-      <div>
-        <div class="sg-title">☑️ Seleccionar</div>
-        <div class="sg-desc">Elige los archivos a procesar</div>
+    <div class="cp-body">
+
+      <div class="prog" id="prog">
+        <div class="prog-top">
+          <div class="prog-lbl"><div class="prog-spin"></div>Procesando archivos...</div>
+          <div class="prog-pct" id="prog-pct">0%</div>
+        </div>
+        <div class="prog-track"><div class="prog-bar" id="prog-bar"></div></div>
+        <div class="prog-steps">
+          <div class="ps" id="ps1"><span class="ps-ico">📖</span>Leyendo datos</div>
+          <div class="ps" id="ps2"><span class="ps-ico">⚙️</span>Procesando</div>
+          <div class="ps" id="ps3"><span class="ps-ico">💾</span>Guardando</div>
+        </div>
       </div>
-    </div>
-    <div class="step-g" id="sg3">
-      <div class="sg-num">3</div>
-      <div>
-        <div class="sg-title">⚡ Procesar</div>
-        <div class="sg-desc">Elimina duplicados automáticamente</div>
+
+      <div id="rc" style="display:flex;flex-direction:column;gap:10px;flex:1">
+        <div class="welcome">
+          <div class="w-art">⚡</div>
+          <div class="w-h">Bienvenido, {{ usuario }}</div>
+          <div class="w-p">Tu espacio es privado. Sube tus archivos, procésalos y descarga los resultados directamente desde aquí.</div>
+          <div class="w-steps">
+            <div class="w-step"><div class="w-n">1</div>Subir</div>
+            <div class="w-step"><div class="w-n">2</div>Seleccionar</div>
+            <div class="w-step"><div class="w-n">3</div>Procesar</div>
+            <div class="w-step"><div class="w-n">4</div>Descargar</div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="step-g" id="sg4">
-      <div class="sg-num">4</div>
-      <div>
-        <div class="sg-title">⬇️ Descargar</div>
-        <div class="sg-desc">Descarga tus archivos limpios</div>
-      </div>
+
     </div>
   </div>
 
-  <!-- STAT BAR -->
-  <div class="statbar">
-    <div class="sb">
-      <div class="sb-ico purple">📁</div>
-      <div>
-        <div class="sb-v purple" id="s-p">0</div>
-        <div class="sb-l">Archivos procesados</div>
-      </div>
+  <!-- RIGHT: History -->
+  <div class="hpanel">
+    <div class="hp-hd"><div class="hp-title">📋 Historial</div><div class="hp-sub">Sesión actual</div></div>
+    <div class="hp-body" id="hp-body">
+      <div class="hp-empty"><div style="font-size:22px;margin-bottom:6px;opacity:.3">📋</div>Sin operaciones aún</div>
     </div>
-    <div class="sb">
-      <div class="sb-ico red">🗑️</div>
-      <div>
-        <div class="sb-v red" id="s-d">0</div>
-        <div class="sb-l">Duplicados eliminados</div>
-      </div>
-    </div>
-    <div class="sb">
-      <div class="sb-ico green">✅</div>
-      <div>
-        <div class="sb-v green" id="s-f">0</div>
-        <div class="sb-l">Filas resultantes</div>
-      </div>
-    </div>
-    <div class="sb">
-      <div class="sb-ico amber">⏱️</div>
-      <div>
-        <div class="sb-v amber" id="s-t">—</div>
-        <div class="sb-l">Último proceso</div>
-      </div>
+    <div class="hp-ft">
+      <button class="btn btn-ghost" style="width:100%;font-size:10px" onclick="clearHist()">🗑️ Limpiar historial</button>
     </div>
   </div>
 
-  <!-- WORKSPACE -->
-  <div class="workspace">
+</div>
 
-    <!-- LEFT -->
-    <aside class="lpanel">
-      <div class="lp-hd">
-        <div class="lp-title">⚙️ Archivos</div>
-      </div>
-      <div class="lp-body">
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="toast-ico">✅</span><span id="toast-msg"></span></div>
 
-        <div class="drop-zone" id="drop-zone" ondragover="dragOver(event)" ondragleave="dragLeave(event)"
-          ondrop="dropFiles(event)" onclick="document.getElementById('file-input').click()">
-          <span class="dz-icon">📂</span>
-          <div class="dz-title">Arrastra archivos aquí</div>
-          <div class="dz-sub">o <b
-              onclick="event.stopPropagation();document.getElementById('file-input').click()">selecciona desde tu
-              equipo</b></div>
-          <div class="dz-formats">
-            <span class="dz-fmt csv">CSV</span>
-            <span class="dz-fmt xlsx">XLSX</span>
-            <span class="dz-fmt xlsx">XLS</span>
-            <span class="dz-fmt txt">TXT</span>
-          </div>
-        </div>
-        <input type="file" id="file-input" multiple accept=".csv,.xlsx,.xls,.txt,.xlsm" style="display:none"
-          onchange="filesFromInput(event)">
+<script>
+let files=[], sel=new Set(), ses={p:0,d:0,f:0}, hist=[];
+let hayResultados = false;
 
-        <div class="sep"></div>
+// ── Guía pasos ──
+function setStep(n){for(let i=1;i<=4;i++){document.getElementById('sg'+i).className='step-g'+(i<n?' done':i===n?' active':'');}}
 
-        <div class="fl-hd">
-          <div class="field-lbl" style="margin-bottom:0">📄 Archivos disponibles</div>
-          <div style="display:flex;align-items:center;gap:4px">
-            <span class="fl-cnt" id="fl-cnt" style="display:none">0</span>
-            <div class="fl-acts" id="fl-acts" style="display:none">
-              <button class="btn btn-ghost" onclick="selectAll()">Todos</button>
-              <button class="btn btn-ghost" onclick="selectNone()">Ninguno</button>
-            </div>
-          </div>
-        </div>
-        <div class="files" id="files">
-          <div class="empty-ph">
-            <div class="empty-ico">📂</div>Sube archivos para comenzar
-          </div>
-        </div>
+// ── Toast ──
+function toast(msg,type='success',dur=4000){
+  const t=document.getElementById('toast');
+  t.className='toast '+type;
+  document.getElementById('toast-ico').textContent=type==='success'?'✅':'❌';
+  document.getElementById('toast-msg').textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
 
-      </div>
-      <div class="lp-ft">
-        <button class="btn btn-purple btn-full" id="btn-run" onclick="procesar()" disabled>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <polygon points="5 3 19 12 5 21 5 3" />
-          </svg>
-          Ejecutar proceso
-        </button>
-      </div>
-    </aside>
+// ── Drag & Drop ──
+function dragOver(e){e.preventDefault();document.getElementById('drop-zone').classList.add('drag-over');}
+function dragLeave(e){e.preventDefault();document.getElementById('drop-zone').classList.remove('drag-over');}
+function dropFiles(e){
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('drag-over');
+  const dropped=Array.from(e.dataTransfer.files);
+  if(dropped.length>0) processDroppedFiles(dropped);
+}
+function filesFromInput(e){
+  const dropped=Array.from(e.target.files);
+  if(dropped.length>0) processDroppedFiles(dropped);
+  e.target.value='';
+}
+async function processDroppedFiles(dropped){
+  const exts=['.csv','.xlsx','.xls','.txt','.xlsm'];
+  const valid=dropped.filter(f=>exts.some(e=>f.name.toLowerCase().endsWith(e)));
+  if(!valid.length){toast('No se encontraron archivos válidos','error',4000);return;}
+  const dz=document.getElementById('drop-zone');
+  dz.innerHTML='<span class="dz-icon">⏳</span><div class="dz-title">Subiendo '+valid.length+' archivo(s)...</div>';
+  const formData=new FormData();
+  valid.forEach(f=>formData.append('archivos',f));
+  try{
+    const r=await fetch('/api/subir',{method:'POST',body:formData});
+    const d=await r.json();
+    if(d.error){toast('Error: '+d.error,'error');resetDZ();return;}
+    toast('✅ '+valid.length+' archivo(s) subidos','success',3000);
+    resetDZ(); listarArchivos(); setStep(2);
+  }catch(ex){toast('Error de conexión','error');resetDZ();}
+}
+function resetDZ(){
+  document.getElementById('drop-zone').innerHTML=`<span class="dz-icon">📂</span><div class="dz-title">Arrastra archivos aquí</div><div class="dz-sub">o <b onclick="event.stopPropagation();document.getElementById('file-input').click()">selecciona desde tu equipo</b></div><div class="dz-formats"><span class="dz-fmt csv">CSV</span><span class="dz-fmt xlsx">XLSX</span><span class="dz-fmt xlsx">XLS</span><span class="dz-fmt txt">TXT</span></div>`;
+}
 
-    <!-- CENTER -->
-    <div class="cpanel">
-      <div class="cp-hd">
-        <div>
-          <div class="cp-title">Panel de <span>Resultados</span></div>
-          <div class="cp-sub">Tus archivos se procesan en tu espacio privado</div>
-        </div>
-        <div style="display:flex;gap:6px;">
-          <button class="btn btn-ghost" id="btn-clear" onclick="limpiarR()" style="display:none">🔄 Limpiar</button>
-        </div>
-      </div>
-      <div class="cp-body">
+// ── Listar ──
+async function listarArchivos(){
+  try{
+    const r=await fetch('/api/listar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({})});
+    const d=await r.json();
+    files=d.archivos||[]; sel.clear(); renderFiles();
+  }catch(e){}
+}
 
-        <div class="prog" id="prog">
-          <div class="prog-top">
-            <div class="prog-lbl">
-              <div class="prog-spin"></div>Procesando archivos...
-            </div>
-            <div class="prog-pct" id="prog-pct">0%</div>
-          </div>
-          <div class="prog-track">
-            <div class="prog-bar" id="prog-bar"></div>
-          </div>
-          <div class="prog-steps">
-            <div class="ps" id="ps1"><span class="ps-ico">📖</span>Leyendo datos</div>
-            <div class="ps" id="ps2"><span class="ps-ico">⚙️</span>Procesando</div>
-            <div class="ps" id="ps3"><span class="ps-ico">💾</span>Guardando</div>
-          </div>
-        </div>
-
-        <div id="rc" style="display:flex;flex-direction:column;gap:10px;flex:1">
-          <div class="welcome">
-            <div class="w-art">⚡</div>
-            <div class="w-h">Bienvenido, {{ usuario }}</div>
-            <div class="w-p">Tu espacio es privado. Sube tus archivos, procésalos y descarga los resultados directamente
-              desde aquí.</div>
-            <div class="w-steps">
-              <div class="w-step">
-                <div class="w-n">1</div>Subir
-              </div>
-              <div class="w-step">
-                <div class="w-n">2</div>Seleccionar
-              </div>
-              <div class="w-step">
-                <div class="w-n">3</div>Procesar
-              </div>
-              <div class="w-step">
-                <div class="w-n">4</div>Descargar
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- RIGHT: History -->
-    <div class="hpanel">
-      <div class="hp-hd">
-        <div class="hp-title">📋 Historial</div>
-        <div class="hp-sub">Sesión actual</div>
-      </div>
-      <div class="hp-body" id="hp-body">
-        <div class="hp-empty">
-          <div style="font-size:22px;margin-bottom:6px;opacity:.3">📋</div>Sin operaciones aún
-        </div>
-      </div>
-      <div class="hp-ft">
-        <button class="btn btn-ghost" style="width:100%;font-size:10px" onclick="clearHist()">🗑️ Limpiar
-          historial</button>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- TOAST -->
-  <div class="toast" id="toast"><span id="toast-ico">✅</span><span id="toast-msg"></span></div>
-
-  <script>
-    let files = [], sel = new Set(), ses = { p: 0, d: 0, f: 0 }, hist = [];
-    let hayResultados = false;
-
-    // ── Guía pasos ──
-    function setStep(n) { for (let i = 1; i <= 4; i++) { document.getElementById('sg' + i).className = 'step-g' + (i < n ? ' done' : i === n ? ' active' : ''); } }
-
-    // ── Toast ──
-    function toast(msg, type = 'success', dur = 4000) {
-      const t = document.getElementById('toast');
-      t.className = 'toast ' + type;
-      document.getElementById('toast-ico').textContent = type === 'success' ? '✅' : '❌';
-      document.getElementById('toast-msg').textContent = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), dur);
-    }
-
-    // ── Drag & Drop ──
-    function dragOver(e) { e.preventDefault(); document.getElementById('drop-zone').classList.add('drag-over'); }
-    function dragLeave(e) { e.preventDefault(); document.getElementById('drop-zone').classList.remove('drag-over'); }
-    function dropFiles(e) {
-      e.preventDefault();
-      document.getElementById('drop-zone').classList.remove('drag-over');
-      const dropped = Array.from(e.dataTransfer.files);
-      if (dropped.length > 0) processDroppedFiles(dropped);
-    }
-    function filesFromInput(e) {
-      const dropped = Array.from(e.target.files);
-      if (dropped.length > 0) processDroppedFiles(dropped);
-      e.target.value = '';
-    }
-    async function processDroppedFiles(dropped) {
-      const exts = ['.csv', '.xlsx', '.xls', '.txt', '.xlsm'];
-      const valid = dropped.filter(f => exts.some(e => f.name.toLowerCase().endsWith(e)));
-      if (!valid.length) { toast('No se encontraron archivos válidos', 'error', 4000); return; }
-      const dz = document.getElementById('drop-zone');
-      dz.innerHTML = '<span class="dz-icon">⏳</span><div class="dz-title">Subiendo ' + valid.length + ' archivo(s)...</div>';
-      const formData = new FormData();
-      valid.forEach(f => formData.append('archivos', f));
-      try {
-        const r = await fetch('/api/subir', { method: 'POST', body: formData });
-        const d = await r.json();
-        if (d.error) { toast('Error: ' + d.error, 'error'); resetDZ(); return; }
-        toast('✅ ' + valid.length + ' archivo(s) subidos', 'success', 3000);
-        resetDZ(); listarArchivos(); setStep(2);
-      } catch (ex) { toast('Error de conexión', 'error'); resetDZ(); }
-    }
-    function resetDZ() {
-      document.getElementById('drop-zone').innerHTML = `<span class="dz-icon">📂</span><div class="dz-title">Arrastra archivos aquí</div><div class="dz-sub">o <b onclick="event.stopPropagation();document.getElementById('file-input').click()">selecciona desde tu equipo</b></div><div class="dz-formats"><span class="dz-fmt csv">CSV</span><span class="dz-fmt xlsx">XLSX</span><span class="dz-fmt xlsx">XLS</span><span class="dz-fmt txt">TXT</span></div>`;
-    }
-
-    // ── Listar ──
-    async function listarArchivos() {
-      try {
-        const r = await fetch('/api/listar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) });
-        const d = await r.json();
-        files = d.archivos || []; sel.clear(); renderFiles();
-      } catch (e) { }
-    }
-
-    // ── Render archivos ──
-    function renderFiles() {
-      const fl = document.getElementById('files'), fc = document.getElementById('fl-cnt'), fa = document.getElementById('fl-acts');
-      if (!files.length) {
-        fl.innerHTML = '<div class="empty-ph"><div class="empty-ico">📭</div>Sin archivos aún · Sube uno para comenzar</div>';
-        fc.style.display = 'none'; fa.style.display = 'none';
-        document.getElementById('btn-run').disabled = true; return;
-      }
-      fc.textContent = files.length; fc.style.display = 'inline'; fa.style.display = 'flex';
-      fl.innerHTML = files.map(f => {
-        const ext = f.nombre.split('.').pop().toLowerCase(), s = sel.has(f.ruta);
-        const re = f.ruta.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-        return `<div class="fi ${s ? 'sel' : ''}" onclick="toggle('${re}')">
+// ── Render archivos ──
+function renderFiles(){
+  const fl=document.getElementById('files'),fc=document.getElementById('fl-cnt'),fa=document.getElementById('fl-acts');
+  if(!files.length){
+    fl.innerHTML='<div class="empty-ph"><div class="empty-ico">📭</div>Sin archivos aún · Sube uno para comenzar</div>';
+    fc.style.display='none';fa.style.display='none';
+    document.getElementById('btn-run').disabled=true;return;
+  }
+  fc.textContent=files.length;fc.style.display='inline';fa.style.display='flex';
+  fl.innerHTML=files.map(f=>{
+    const ext=f.nombre.split('.').pop().toLowerCase(),s=sel.has(f.ruta);
+    const re=f.ruta.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return `<div class="fi ${s?'sel':''}" onclick="toggle('${re}')">
       <div class="chk"><svg class="chkm" width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
       <span class="fext ${ext}">${ext.toUpperCase()}</span>
       <span class="fname" title="${f.nombre}">${f.nombre}</span>
     </div>`;
-      }).join('');
-      document.getElementById('btn-run').disabled = sel.size === 0;
-      if (sel.size > 0) setStep(3);
+  }).join('');
+  document.getElementById('btn-run').disabled=sel.size===0;
+  if(sel.size>0) setStep(3);
+}
+
+function toggle(r){sel.has(r)?sel.delete(r):sel.add(r);renderFiles();if(sel.size>0)setStep(3);else setStep(2);}
+function selectAll(){files.forEach(f=>sel.add(f.ruta));renderFiles();setStep(3);}
+function selectNone(){sel.clear();renderFiles();setStep(2);}
+
+// ── Animar contadores ──
+function animN(el,from,to){
+  const steps=25,inc=(to-from)/steps;let c=from,n=0;
+  const t=setInterval(()=>{c+=inc;n++;el.textContent=Math.round(c).toLocaleString();if(n>=steps){el.textContent=to.toLocaleString();clearInterval(t);}},600/steps);
+}
+
+// ── Procesar ──
+async function procesar(){
+  const s=[...sel];
+  if(!s.length)return;
+  const pg=document.getElementById('prog'),pb=document.getElementById('prog-bar'),pp=document.getElementById('prog-pct');
+  const p1=document.getElementById('ps1'),p2=document.getElementById('ps2'),p3=document.getElementById('ps3');
+  const phase=(pct,c1,c2,c3)=>{pb.style.width=pct+'%';pp.textContent=pct+'%';p1.className='ps '+c1;p2.className='ps '+c2;p3.className='ps '+c3;};
+
+  pg.classList.add('show');
+  document.getElementById('rc').innerHTML='';
+  document.getElementById('btn-clear').style.display='none';
+  document.getElementById('btn-run').disabled=true;
+
+  phase(15,'on','','');await w(600);
+  phase(45,'done','on','');await w(500);
+
+  const t0=Date.now();
+  try{
+    const res=await fetch('/api/procesar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({archivos:s})});
+    const data=await res.json();
+    phase(85,'done','done','on');await w(500);
+    phase(100,'done','done','done');await w(700);
+    pg.classList.remove('show');
+    const el=((Date.now()-t0)/1000).toFixed(1);
+
+    if(data.error){
+      toast('Error: '+data.error,'error',6000);
+      document.getElementById('rc').innerHTML=`<div class="rc err"><div class="err-box">❌ ${data.error}</div></div>`;
+    } else {
+      renderResults(data.resultados);
+      const ok=data.resultados.filter(r=>r.estado==='ok');
+      const nd=ok.reduce((s,r)=>s+r.duplicados_eliminados,0);
+      const nf=ok.reduce((s,r)=>s+r.filas_resultado,0);
+      animN(document.getElementById('s-p'),ses.p,ses.p+ok.length);
+      animN(document.getElementById('s-d'),ses.d,ses.d+nd);
+      animN(document.getElementById('s-f'),ses.f,ses.f+nf);
+      document.getElementById('s-t').textContent=el+'s';
+      ses.p+=ok.length;ses.d+=nd;ses.f+=nf;
+      ok.forEach(r=>addHist(r));
+      listarArchivos();
+      setStep(4);
+      hayResultados=true;
+      toast('✅ '+ok.length+' archivo(s) procesados · '+nd.toLocaleString()+' duplicados eliminados','success',5000);
     }
+  }catch(e){
+    pg.classList.remove('show');
+    toast('Error de conexión','error');
+    document.getElementById('rc').innerHTML=`<div class="rc err"><div class="err-box">❌ ${e.message}</div></div>`;
+  }
+  document.getElementById('btn-run').disabled=false;
+  document.getElementById('btn-clear').style.display='inline-flex';
+}
 
-    function toggle(r) { sel.has(r) ? sel.delete(r) : sel.add(r); renderFiles(); if (sel.size > 0) setStep(3); else setStep(2); }
-    function selectAll() { files.forEach(f => sel.add(f.ruta)); renderFiles(); setStep(3); }
-    function selectNone() { sel.clear(); renderFiles(); setStep(2); }
+function w(ms){return new Promise(r=>setTimeout(r,ms));}
 
-    // ── Animar contadores ──
-    function animN(el, from, to) {
-      const steps = 25, inc = (to - from) / steps; let c = from, n = 0;
-      const t = setInterval(() => { c += inc; n++; el.textContent = Math.round(c).toLocaleString(); if (n >= steps) { el.textContent = to.toLocaleString(); clearInterval(t); } }, 600 / steps);
+// ── Descargar ZIP ──
+async function descargar(tipo){
+  toast('📦 Preparando descarga...','success',2000);
+  window.location.href='/api/descargar?tipo='+tipo;
+}
+// Redirigir POST a GET para descarga
+app=null;
+const origFetch=window.fetch;
+// Sobreescribir endpoint descargar como GET
+async function descargarZip(tipo){
+  toast('📦 Preparando tu descarga...','success',2500);
+  try{
+    const r=await fetch('/api/descargar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tipo})});
+    if(!r.ok){const d=await r.json();toast(d.error||'Error al descargar','error');return;}
+    const blob=await r.blob();
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download=r.headers.get('Content-Disposition')?.split('filename=')[1]||tipo+'.zip';
+    a.click(); URL.revokeObjectURL(url);
+    toast('✅ Descarga iniciada','success',3000);
+  }catch(e){toast('Error al descargar','error');}
+}
+
+// ── Abrir carpeta local ──
+async function abrirCarpeta(tipo){
+  try{
+    const r=await fetch('/api/abrir-carpeta',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tipo})});
+    const d=await r.json();
+    if(d.error){
+      toast('⚠️ '+d.error,'error',4000);
+    } else if(d.local===false){
+      // Estamos en Railway u otro servidor remoto
+      toast('ℹ️ Estás en la versión web — usa los botones ⬇️ ZIP para descargar tus archivos','success',5000);
+    } else {
+      toast('📂 Carpeta abierta en el explorador','success',3000);
     }
+  }catch(e){toast('⚠️ Error al abrir carpeta','error',3000);}
+}
 
-    // ── Procesar ──
-    async function procesar() {
-      const s = [...sel];
-      if (!s.length) return;
-      const pg = document.getElementById('prog'), pb = document.getElementById('prog-bar'), pp = document.getElementById('prog-pct');
-      const p1 = document.getElementById('ps1'), p2 = document.getElementById('ps2'), p3 = document.getElementById('ps3');
-      const phase = (pct, c1, c2, c3) => { pb.style.width = pct + '%'; pp.textContent = pct + '%'; p1.className = 'ps ' + c1; p2.className = 'ps ' + c2; p3.className = 'ps ' + c3; };
+// ── Render resultados ──
+function renderResults(res){
+  const ok=res.filter(r=>r.estado==='ok');
+  const te=ok.reduce((s,r)=>s+r.duplicados_eliminados,0);
+  const tf=ok.reduce((s,r)=>s+r.filas_resultado,0);
+  let h='';
 
-      pg.classList.add('show');
-      document.getElementById('rc').innerHTML = '';
-      document.getElementById('btn-clear').style.display = 'none';
-      document.getElementById('btn-run').disabled = true;
-
-      phase(15, 'on', '', ''); await w(600);
-      phase(45, 'done', 'on', ''); await w(500);
-
-      const t0 = Date.now();
-      try {
-        const res = await fetch('/api/procesar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ archivos: s }) });
-        const data = await res.json();
-        phase(85, 'done', 'done', 'on'); await w(500);
-        phase(100, 'done', 'done', 'done'); await w(700);
-        pg.classList.remove('show');
-        const el = ((Date.now() - t0) / 1000).toFixed(1);
-
-        if (data.error) {
-          toast('Error: ' + data.error, 'error', 6000);
-          document.getElementById('rc').innerHTML = `<div class="rc err"><div class="err-box">❌ ${data.error}</div></div>`;
-        } else {
-          renderResults(data.resultados);
-          const ok = data.resultados.filter(r => r.estado === 'ok');
-          const nd = ok.reduce((s, r) => s + r.duplicados_eliminados, 0);
-          const nf = ok.reduce((s, r) => s + r.filas_resultado, 0);
-          animN(document.getElementById('s-p'), ses.p, ses.p + ok.length);
-          animN(document.getElementById('s-d'), ses.d, ses.d + nd);
-          animN(document.getElementById('s-f'), ses.f, ses.f + nf);
-          document.getElementById('s-t').textContent = el + 's';
-          ses.p += ok.length; ses.d += nd; ses.f += nf;
-          ok.forEach(r => addHist(r));
-          listarArchivos();
-          setStep(4);
-          hayResultados = true;
-          toast('✅ ' + ok.length + ' archivo(s) procesados · ' + nd.toLocaleString() + ' duplicados eliminados', 'success', 5000);
-        }
-      } catch (e) {
-        pg.classList.remove('show');
-        toast('Error de conexión', 'error');
-        document.getElementById('rc').innerHTML = `<div class="rc err"><div class="err-box">❌ ${e.message}</div></div>`;
-      }
-      document.getElementById('btn-run').disabled = false;
-      document.getElementById('btn-clear').style.display = 'inline-flex';
-    }
-
-    function w(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-    // ── Descargar ZIP ──
-    async function descargar(tipo) {
-      toast('📦 Preparando descarga...', 'success', 2000);
-      window.location.href = '/api/descargar?tipo=' + tipo;
-    }
-    // Redirigir POST a GET para descarga
-    app = null;
-    const origFetch = window.fetch;
-    // Sobreescribir endpoint descargar como GET
-    async function descargarZip(tipo) {
-      toast('📦 Preparando tu descarga...', 'success', 2500);
-      try {
-        const r = await fetch('/api/descargar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tipo }) });
-        if (!r.ok) { const d = await r.json(); toast(d.error || 'Error al descargar', 'error'); return; }
-        const blob = await r.blob();
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = r.headers.get('Content-Disposition')?.split('filename=')[1] || tipo + '.zip';
-        a.click(); URL.revokeObjectURL(url);
-        toast('✅ Descarga iniciada', 'success', 3000);
-      } catch (e) { toast('Error al descargar', 'error'); }
-    }
-
-    // ── Abrir carpeta local ──
-    async function abrirCarpeta(tipo) {
-      try {
-        const r = await fetch('/api/abrir-carpeta', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tipo }) });
-        const d = await r.json();
-        if (d.error) {
-          toast('⚠️ ' + d.error, 'error', 4000);
-        } else if (d.local === false) {
-          // Estamos en Railway u otro servidor remoto
-          toast('ℹ️ Estás en la versión web — usa los botones ⬇️ ZIP para descargar tus archivos', 'success', 5000);
-        } else {
-          toast('📂 Carpeta abierta en el explorador', 'success', 3000);
-        }
-      } catch (e) { toast('⚠️ Error al abrir carpeta', 'error', 3000); }
-    }
-
-    // ── Render resultados ──
-    function renderResults(res) {
-      const ok = res.filter(r => r.estado === 'ok');
-      const te = ok.reduce((s, r) => s + r.duplicados_eliminados, 0);
-      const tf = ok.reduce((s, r) => s + r.filas_resultado, 0);
-      let h = '';
-
-      // Banner de descarga
-      if (ok.length) {
-        h += `<div class="dl-banner">
+  // Banner de descarga
+  if(ok.length){
+    h+=`<div class="dl-banner">
       <div class="dl-banner-txt">
         <div class="dl-title">🎉 ¡Proceso completado!</div>
-        <div class="dl-sub">${ok.length} archivo(s) · ${te.toLocaleString()} duplicados eliminados</div>
+        <div class="dl-sub">${ok.length} archivo(s) procesados · ${te.toLocaleString()} duplicados eliminados · Descarga cada archivo desde su tarjeta</div>
       </div>
       <div class="dl-btns" style="flex-wrap:wrap;gap:6px;">
-        <button class="btn btn-purple btn-sm" onclick="descargarZip('limpios')">⬇️ ZIP Sin Duplicados</button>
-        <button class="btn btn-red btn-sm" onclick="descargarZip('duplicados')">⬇️ ZIP Duplicados</button>
-        <button class="btn btn-green btn-sm" onclick="abrirCarpeta('limpios')" title="Solo funciona en versión local">📂 Abrir Sin Duplicados</button>
-        <button class="btn btn-outline btn-sm" onclick="abrirCarpeta('duplicados')" title="Solo funciona en versión local">📂 Abrir Duplicados</button>
+        <button class="btn btn-green btn-sm" onclick="abrirCarpeta('limpios')">📂 Abrir Sin Duplicados</button>
+        <button class="btn btn-outline btn-sm" onclick="abrirCarpeta('duplicados')">📂 Abrir Duplicados</button>
       </div>
     </div>`;
 
-        h += `<div class="met-row">
+    h+=`<div class="met-row">
       <div class="mc purple" style="animation-delay:0s"><div class="mc-ico">📁</div><div class="mc-v purple">${ok.length}</div><div class="mc-l">Procesados</div></div>
       <div class="mc red" style="animation-delay:.07s"><div class="mc-ico">🗑️</div><div class="mc-v red">${te.toLocaleString()}</div><div class="mc-l">Eliminados</div></div>
       <div class="mc green" style="animation-delay:.14s"><div class="mc-ico">✅</div><div class="mc-v green">${tf.toLocaleString()}</div><div class="mc-l">Resultantes</div></div>
     </div>`;
-      }
+  }
 
-      res.forEach((r, i) => {
-        if (r.estado === 'ok') {
-          h += `<div class="rc ok" style="animation-delay:${.1 + i * .08}s">
+  res.forEach((r,i)=>{
+    if(r.estado==='ok'){
+      h+=`<div class="rc ok" style="animation-delay:${.1+i*.08}s">
         <div class="rc-hd"><div class="rc-ico ok">✅</div><div class="rc-name">${r.archivo}</div></div>
         <span class="rc-contrato">🔖 Contrato: ${r.contrato}</span>
         <div class="rc-stats">
@@ -1832,44 +588,43 @@
           <div class="rs"><div class="rs-v r">${r.duplicados_eliminados.toLocaleString()}</div><div class="rs-l">Duplicados</div></div>
           <div class="rs"><div class="rs-v g">${r.filas_resultado.toLocaleString()}</div><div class="rs-l">Sin Duplic.</div></div>
         </div>
-        ${r.guardado_duplicados ? '<div class="rc-path dup">🗑️ Duplicados guardados separadamente</div>' : '<div class="rc-path" style="color:#10b981;background:#f0fdf4;border-color:#bbf7d0">✅ Sin duplicados encontrados</div>'}
+        ${r.guardado_duplicados?'<div class="rc-path dup">🗑️ Duplicados guardados separadamente</div>':'<div class="rc-path" style="color:#10b981;background:#f0fdf4;border-color:#bbf7d0">✅ Sin duplicados encontrados</div>'}
         <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;">
           <button class="btn btn-purple btn-sm" onclick="descargarArchivo('limpios','${r.nombre_limpio}')">⬇️ Descargar limpio</button>
-          ${r.guardado_duplicados ? `<button class="btn btn-red btn-sm" onclick="descargarArchivo('duplicados','${r.nombre_duplicados}')">⬇️ Descargar duplicados</button>` : ''}
+          ${r.guardado_duplicados?`<button class="btn btn-red btn-sm" onclick="descargarArchivo('duplicados','${r.nombre_duplicados}')">⬇️ Descargar duplicados</button>`:''}
         </div>
       </div>`;
-        } else {
-          h += `<div class="rc err" style="animation-delay:${.1 + i * .08}s">
+    } else {
+      h+=`<div class="rc err" style="animation-delay:${.1+i*.08}s">
         <div class="rc-hd"><div class="rc-ico err">❌</div><div class="rc-name">${r.archivo}</div></div>
         <div class="err-box">${r.mensaje}</div>
       </div>`;
-        }
-      });
-      document.getElementById('rc').innerHTML = h;
     }
+  });
+  document.getElementById('rc').innerHTML=h;
+}
 
-    // ── Historial ──
-    function addHist(r) {
-      const t = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      hist.unshift({ n: r.archivo, d: r.duplicados_eliminados, f: r.filas_resultado, t });
-      renderHist();
-    }
-    function renderHist() {
-      const b = document.getElementById('hp-body');
-      if (!hist.length) { b.innerHTML = '<div class="hp-empty"><div style="font-size:22px;margin-bottom:6px;opacity:.3">📋</div>Sin operaciones aún</div>'; return; }
-      b.innerHTML = hist.map(h => `<div class="hi"><div class="hi-top"><div class="hi-n" title="${h.n}">${h.n}</div><div class="hi-t">${h.t}</div></div><div class="hi-chips"><span class="hc g">✅ ${h.f.toLocaleString()}</span><span class="hc r">🗑 ${h.d.toLocaleString()}</span></div></div>`).join('');
-    }
-    function clearHist() { hist = []; renderHist(); }
+// ── Historial ──
+function addHist(r){
+  const t=new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  hist.unshift({n:r.archivo,d:r.duplicados_eliminados,f:r.filas_resultado,t});
+  renderHist();
+}
+function renderHist(){
+  const b=document.getElementById('hp-body');
+  if(!hist.length){b.innerHTML='<div class="hp-empty"><div style="font-size:22px;margin-bottom:6px;opacity:.3">📋</div>Sin operaciones aún</div>';return;}
+  b.innerHTML=hist.map(h=>`<div class="hi"><div class="hi-top"><div class="hi-n" title="${h.n}">${h.n}</div><div class="hi-t">${h.t}</div></div><div class="hi-chips"><span class="hc g">✅ ${h.f.toLocaleString()}</span><span class="hc r">🗑 ${h.d.toLocaleString()}</span></div></div>`).join('');
+}
+function clearHist(){hist=[];renderHist();}
 
-    function limpiarR() {
-      document.getElementById('rc').innerHTML = `<div class="welcome"><div class="w-art">⚡</div><div class="w-h">Listo para procesar</div><div class="w-p">Sube tus archivos, selecciónalos y ejecuta el proceso.</div></div>`;
-      document.getElementById('btn-clear').style.display = 'none';
-      setStep(1); hayResultados = false;
-    }
+function limpiarR(){
+  document.getElementById('rc').innerHTML=`<div class="welcome"><div class="w-art">⚡</div><div class="w-h">Listo para procesar</div><div class="w-p">Sube tus archivos, selecciónalos y ejecuta el proceso.</div></div>`;
+  document.getElementById('btn-clear').style.display='none';
+  setStep(1); hayResultados=false;
+}
 
-    // Cargar archivos al iniciar
-    listarArchivos();
-  </script>
+// Cargar archivos al iniciar
+listarArchivos();
+</script>
 </body>
-
 </html>

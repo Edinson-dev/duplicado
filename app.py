@@ -1,11 +1,11 @@
 """
 app.py - DataCleanse Pro · Enterprise
-Versión híbrida: crea carpetas locales + permite descarga ZIP
+Versión híbrida: crea carpetas locales + descarga directa de archivos
 """
 
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, send_file
 import pandas as pd
-import os, re, glob, traceback, subprocess, platform, zipfile, io
+import os, re, glob, traceback, subprocess, platform, io
 from datetime import datetime
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -27,12 +27,22 @@ USUARIOS = {
 COLUMNA_FACTURA = "numero_facturado"
 COLUMNA_FECHA   = "fecha_prestacion"
 EXTENSIONES     = ["*.csv", "*.txt", "*.xlsx", "*.xls", "*.xlsm"]
-BASE_UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "user_data")
+
+# Carpeta base: en local usa la carpeta del proyecto, en Railway usa user_data/
+ES_RAILWAY = os.environ.get("RAILWAY_ENVIRONMENT") is not None
+BASE_DIR   = os.path.dirname(os.path.abspath(__file__))
 # ============================================================
 
 
 def carpeta_usuario(username):
-    path = os.path.join(BASE_UPLOAD_DIR, username)
+    """
+    - En Railway: user_data/{usuario}/
+    - En local:   carpeta del proyecto (mismo nivel que app.py)
+    """
+    if ES_RAILWAY:
+        path = os.path.join(BASE_DIR, "user_data", username)
+    else:
+        path = os.path.join(BASE_DIR, username) if username != "admin" else BASE_DIR
     os.makedirs(path, exist_ok=True)
     return path
 
@@ -132,7 +142,13 @@ def listar_archivos():
     archivos = []
     for ext in EXTENSIONES:
         archivos.extend(glob.glob(os.path.join(carpeta, ext)))
-    archivos = [a for a in archivos if not a.endswith(".py")]
+    # Excluir archivos dentro de subcarpetas Sin Duplicados / Duplicados
+    archivos = [
+        a for a in archivos
+        if not a.endswith(".py")
+        and "Sin Duplicados" not in a
+        and "Duplicados" not in a
+    ]
     archivos_info = [{"nombre": os.path.basename(a), "ruta": a} for a in sorted(archivos)]
     return jsonify({"archivos": archivos_info, "carpeta": carpeta})
 
@@ -166,18 +182,11 @@ def procesar():
     if not archivos:
         return jsonify({"error": "No se seleccionaron archivos"}), 400
 
-    # ── Crear y limpiar carpetas de salida ───────────────
+    # ── Crear carpetas de salida ──────────────────────────
     carpeta_limpios    = os.path.join(carpeta, "Sin Duplicados")
     carpeta_duplicados = os.path.join(carpeta, "Duplicados")
     os.makedirs(carpeta_limpios,    exist_ok=True)
     os.makedirs(carpeta_duplicados, exist_ok=True)
-
-    # Limpiar archivos anteriores para que el ZIP solo tenga el proceso actual
-    for f in glob.glob(os.path.join(carpeta_limpios, "*.xlsx")):
-        os.remove(f)
-    for root, dirs, files in os.walk(carpeta_duplicados):
-        for f in files:
-            os.remove(os.path.join(root, f))
 
     resultados = []
 
@@ -206,11 +215,13 @@ def procesar():
                 guardar_excel(df_limpio, ruta_limpio, contrato)
 
                 # Guardar duplicados → Duplicados/{contrato}/
-                ruta_dup = None
+                ruta_dup      = None
+                nombre_dup    = None
                 if len(df_duplicados) > 0:
                     carpeta_contrato = os.path.join(carpeta_duplicados, contrato)
                     os.makedirs(carpeta_contrato, exist_ok=True)
-                    ruta_dup = os.path.join(carpeta_contrato, f"{nombre_base}_duplicados.xlsx")
+                    nombre_dup = f"{nombre_base}_duplicados.xlsx"
+                    ruta_dup   = os.path.join(carpeta_contrato, nombre_dup)
                     guardar_excel(df_duplicados, ruta_dup, f"{contrato}_dup")
 
                 os.remove(ruta_archivo)
@@ -222,12 +233,10 @@ def procesar():
                     "filas_originales":      filas_orig,
                     "duplicados_eliminados": len(df_duplicados),
                     "filas_resultado":       len(df_limpio),
-                    "guardado_limpio":       ruta_limpio,
-                    "guardado_duplicados":   ruta_dup,
-                    "nombre_limpio":         os.path.basename(ruta_limpio),
-                    "nombre_duplicados":     os.path.basename(ruta_dup) if ruta_dup else None,
-                    "carpeta_limpios":       carpeta_limpios,
-                    "carpeta_duplicados":    carpeta_duplicados
+                    "ruta_limpio":           ruta_limpio,
+                    "ruta_dup":              ruta_dup,
+                    "nombre_limpio":         f"{nombre_base}.xlsx",
+                    "nombre_dup":            nombre_dup,
                 })
                 continue
 
@@ -247,68 +256,47 @@ def procesar():
 @app.route("/api/descargar", methods=["POST"])
 @login_required
 def descargar():
-    """Descarga un archivo específico o toda la carpeta como ZIP."""
-    data       = request.json
-    tipo       = data.get("tipo", "limpios")
-    archivo    = data.get("archivo", None)   # nombre específico opcional
-    carpeta    = carpeta_usuario(session["usuario"])
-    subcarpeta = os.path.join(carpeta, "Sin Duplicados" if tipo == "limpios" else "Duplicados")
+    """Descarga directa del archivo .xlsx sin ZIP."""
+    data    = request.json
+    tipo    = data.get("tipo", "limpios")       # 'limpios' o 'duplicados'
+    archivo = data.get("archivo")               # nombre del archivo .xlsx
+    carpeta = carpeta_usuario(session["usuario"])
 
-    if not os.path.isdir(subcarpeta):
-        return jsonify({"error": "No hay archivos procesados aún"}), 404
+    if tipo == "limpios":
+        ruta = os.path.join(carpeta, "Sin Duplicados", archivo)
+    else:
+        # Buscar dentro de subcarpetas de contrato
+        ruta = None
+        base = os.path.join(carpeta, "Duplicados")
+        for root, _, files in os.walk(base):
+            if archivo in files:
+                ruta = os.path.join(root, archivo)
+                break
 
-    # ── Descarga de archivo específico ──────────────────
-    if archivo:
-        if tipo == "limpios":
-            ruta_archivo = os.path.join(subcarpeta, archivo)
-        else:
-            # En duplicados buscar dentro de subcarpetas de contrato
-            ruta_archivo = None
-            for root, _, files in os.walk(subcarpeta):
-                for f in files:
-                    if f == archivo:
-                        ruta_archivo = os.path.join(root, f)
-                        break
-
-        if ruta_archivo and os.path.isfile(ruta_archivo):
-            return send_file(ruta_archivo, as_attachment=True,
-                             download_name=archivo, mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    if not ruta or not os.path.isfile(ruta):
         return jsonify({"error": "Archivo no encontrado"}), 404
 
-    # ── Descarga de toda la carpeta como ZIP ────────────
-    hay_archivos = any(files for _, _, files in os.walk(subcarpeta))
-    if not hay_archivos:
-        return jsonify({"error": "La carpeta está vacía"}), 404
-
-    buf = io.BytesIO()
-    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
-        for root, _, files in os.walk(subcarpeta):
-            for fname in files:
-                full    = os.path.join(root, fname)
-                arcname = os.path.relpath(full, subcarpeta)
-                zf.write(full, arcname)
-    buf.seek(0)
-
-    nombre_zip = f"{session['usuario']}_{tipo}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.zip"
-    return send_file(buf, as_attachment=True, download_name=nombre_zip,
-                     mimetype="application/zip")
+    return send_file(
+        ruta,
+        as_attachment=True,
+        download_name=archivo,
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
 
 
 @app.route("/api/abrir-carpeta", methods=["POST"])
 @login_required
 def abrir_carpeta():
     """Abre carpeta en el explorador — solo funciona en versión local."""
-    data    = request.json
-    tipo    = data.get("tipo", "limpios")
-    carpeta = carpeta_usuario(session["usuario"])
+    data       = request.json
+    tipo       = data.get("tipo", "limpios")
+    carpeta    = carpeta_usuario(session["usuario"])
     subcarpeta = os.path.join(carpeta, "Sin Duplicados" if tipo == "limpios" else "Duplicados")
 
     if not os.path.isdir(subcarpeta):
         return jsonify({"error": "Carpeta no encontrada"}), 404
 
     sistema = platform.system()
-
-    # En Railway u otro servidor Linux sin display → no se puede abrir explorador
     if sistema == "Linux" and not os.environ.get("DISPLAY"):
         return jsonify({"local": False, "ruta": subcarpeta}), 200
 
