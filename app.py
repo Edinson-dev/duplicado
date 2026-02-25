@@ -314,10 +314,9 @@ def abrir_carpeta():
 
 if __name__ == "__main__":
     print("\n" + "="*55)
-    print("  DataCleanse Pro · Modo Web Compartido")
+    print("  DataCleanse Pro · Versión Híbrida")
     print("="*55)
-    print("  Servidor iniciando...")
+    print("  Abre tu navegador en:  http://localhost:5000")
+    print("  Para cerrar presiona:  Ctrl + C")
     print("="*55 + "\n")
-
-    port = int(os.environ.get("PORT", 8000))
-    app.run(debug=False, host="0.0.0.0", port=port)
+    app.run(debug=False, port=5000, host="0.0.0.0")
