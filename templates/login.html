@@ -1,61 +1,216 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DataCleanse Pro · Acceso</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:#0f172a;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 600px 400px at 60% 20%,rgba(99,102,241,.12),transparent 60%),radial-gradient(ellipse 400px 300px at 20% 80%,rgba(139,92,246,.08),transparent 55%);pointer-events:none}
-.card{background:#1e293b;border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:40px 36px;width:100%;max-width:400px;position:relative;box-shadow:0 25px 60px rgba(0,0,0,.5)}
-.logo{display:flex;align-items:center;gap:10px;margin-bottom:28px;justify-content:center}
-.logo-mark{width:42px;height:42px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(99,102,241,.4)}
-.logo-mark svg{width:20px;height:20px;fill:white}
-.logo-text{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.3px}
-.logo-text span{color:#a78bfa}
-.card-title{font-size:22px;font-weight:800;color:#f1f5f9;text-align:center;margin-bottom:6px}
-.card-sub{font-size:13px;color:#64748b;text-align:center;margin-bottom:28px}
-.field{margin-bottom:16px}
-.field label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#64748b;margin-bottom:6px}
-.field input{width:100%;background:#0f172a;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;padding:11px 14px;font-family:'Inter',sans-serif;font-size:13px;color:#f1f5f9;outline:none;transition:all .2s}
-.field input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
-.field input::placeholder{color:#334155}
-.btn-login{width:100%;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:9px;padding:12px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:4px;box-shadow:0 4px 16px rgba(99,102,241,.35)}
-.btn-login:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(99,102,241,.45)}
-.btn-login:active{transform:translateY(0)}
-.error{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:10px 14px;font-size:12px;color:#f87171;margin-bottom:16px;text-align:center}
-.footer-txt{text-align:center;font-size:11px;color:#334155;margin-top:20px}
-.lock-icon{text-align:center;font-size:36px;margin-bottom:16px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DataCleanse Pro · Acceso</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse 600px 400px at 60% 20%, rgba(99, 102, 241, .12), transparent 60%), radial-gradient(ellipse 400px 300px at 20% 80%, rgba(139, 92, 246, .08), transparent 55%);
+      pointer-events: none
+    }
+
+    .card {
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 20px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 400px;
+      position: relative;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, .5)
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+      justify-content: center
+    }
+
+    .logo-mark {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(99, 102, 241, .4)
+    }
+
+    .logo-mark svg {
+      width: 20px;
+      height: 20px;
+      fill: white
+    }
+
+    .logo-text {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -.3px
+    }
+
+    .logo-text span {
+      color: #a78bfa
+    }
+
+    .card-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #f1f5f9;
+      text-align: center;
+      margin-bottom: 6px
+    }
+
+    .card-sub {
+      font-size: 13px;
+      color: #64748b;
+      text-align: center;
+      margin-bottom: 28px
+    }
+
+    .field {
+      margin-bottom: 16px
+    }
+
+    .field label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      color: #64748b;
+      margin-bottom: 6px
+    }
+
+    .field input {
+      width: 100%;
+      background: #0f172a;
+      border: 1.5px solid rgba(255, 255, 255, .1);
+      border-radius: 9px;
+      padding: 11px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #f1f5f9;
+      outline: none;
+      transition: all .2s
+    }
+
+    .field input:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, .15)
+    }
+
+    .field input::placeholder {
+      color: #334155
+    }
+
+    .btn-login {
+      width: 100%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      padding: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+      margin-top: 4px;
+      box-shadow: 0 4px 16px rgba(99, 102, 241, .35)
+    }
+
+    .btn-login:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(99, 102, 241, .45)
+    }
+
+    .btn-login:active {
+      transform: translateY(0)
+    }
+
+    .error {
+      background: rgba(239, 68, 68, .1);
+      border: 1px solid rgba(239, 68, 68, .3);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #f87171;
+      margin-bottom: 16px;
+      text-align: center
+    }
+
+    .footer-txt {
+      text-align: center;
+      font-size: 11px;
+      color: #334155;
+      margin-top: 20px
+    }
+
+    .lock-icon {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 16px
+    }
+  </style>
 </head>
+
 <body>
-<div class="card">
-  <div class="logo">
-    <div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-    <div class="logo-text">DataCleanse<span>Pro</span></div>
+  <div class="card">
+    <div class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 24 24">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+        </svg></div>
+      <div class="logo-text">Savia Salud Eps<span> Duplicados</span></div>
+    </div>
+    <div class="lock-icon">🔐</div>
+    <div class="card-title">Login Acceso</div>
+    <div class="card-sub">Solo usuarios invitados pueden ingresar</div>
+
+    {% if error %}
+    <div class="error">⚠️ {{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="/login">
+      <div class="field">
+        <label>Usuario</label>
+        <input type="text" name="usuario" placeholder="Tu usuario..." autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password" name="clave" placeholder="Tu contraseña..." autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn-login">Ingresar →</button>
+    </form>
+    <div class="footer-txt">¿No tienes acceso? Solicítalo al administrador</div>
   </div>
-  <div class="lock-icon">🔐</div>
-  <div class="card-title">Acceso privado</div>
-  <div class="card-sub">Solo usuarios invitados pueden ingresar</div>
-
-  {% if error %}
-  <div class="error">⚠️ {{ error }}</div>
-  {% endif %}
-
-  <form method="POST" action="/login">
-    <div class="field">
-      <label>Usuario</label>
-      <input type="text" name="usuario" placeholder="Tu usuario..." autocomplete="username" required>
-    </div>
-    <div class="field">
-      <label>Contraseña</label>
-      <input type="password" name="clave" placeholder="Tu contraseña..." autocomplete="current-password" required>
-    </div>
-    <button type="submit" class="btn-login">Ingresar →</button>
-  </form>
-  <div class="footer-txt">¿No tienes acceso? Solicítalo al administrador</div>
-</div>
 </body>
+
 </html>
