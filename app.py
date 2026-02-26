@@ -343,7 +343,7 @@ def abrir_carpeta():
 
 if __name__ == "__main__":
     print("\n" + "="*55)
-    print("  DataCleanse Pro · Modo Web Compartido")
+    print("  Savia Salud Eps · Modo Web Compartido")
     print("="*55)
     print("  Servidor iniciando...")
     print("="*55 + "\n")
