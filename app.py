@@ -74,9 +74,22 @@ def leer_archivo(ruta):
     ext = ext.lower()
     if ext in [".xlsx", ".xls", ".xlsm"]:
         return pd.read_excel(ruta)
-    df_prueba = pd.read_csv(ruta, nrows=2, header=None, encoding="utf-8-sig")
+
+    # Detectar separador automáticamente (coma, pipe, punto y coma, tab)
+    df_prueba = pd.read_csv(ruta, nrows=5, header=None, encoding="utf-8-sig")
+    muestra = df_prueba.to_string()
+
     if df_prueba.shape[1] == 1:
-        return pd.read_csv(ruta, sep=",", encoding="utf-8-sig", low_memory=False)
+        # Solo una columna detectada — revisar si tiene | o ;
+        primera_linea = df_prueba.iloc[0, 0] if len(df_prueba) > 0 else ""
+        if '|' in str(primera_linea):
+            return pd.read_csv(ruta, sep='|', encoding="utf-8-sig", low_memory=False)
+        elif ';' in str(primera_linea):
+            return pd.read_csv(ruta, sep=';', encoding="utf-8-sig", low_memory=False)
+        else:
+            return pd.read_csv(ruta, sep=",", encoding="utf-8-sig", low_memory=False)
+
+    # Múltiples columnas detectadas — usar detección automática
     return pd.read_csv(ruta, sep=None, engine="python", encoding="utf-8-sig")
 
 
@@ -346,7 +359,7 @@ def abrir_carpeta():
 
 if __name__ == "__main__":
     print("\n" + "="*55)
-    print("  Savia Salud Eps · Modo Web Compartido")
+    print("  Contratos · Modo Web Compartido")
     print("="*55)
     print("  Servidor iniciando...")
     print("="*55 + "\n")
