@@ -360,6 +360,18 @@ def cruzar_por_contrato(df_especifico, df_general, numero_contrato, incluir_sin_
     df_esp = normalizar_columnas(df_especifico.copy())
     df_gen = normalizar_columnas(df_general.copy())
 
+    contrato_upper = numero_contrato.strip().upper()
+
+ # 1b. Filtrar el ESPECÍFICO por el contrato pedido
+    if 'numero_contrato' in df_esp.columns:
+        col_esp = df_esp['numero_contrato'].astype(str).str.strip().str.upper()
+        if incluir_sin_contrato:
+            mask_sin = col_esp.isin({'SIN CONTRATO', 'NA', 'N/A', 'VARIOS', '0', 'NONE', ''})
+            df_esp = df_esp[col_esp == contrato_upper | mask_sin].copy()
+        else:
+            df_esp = df_esp[col_esp == contrato_upper].copy()
+
+
     # 2. Filtrar general por contrato (+ sin contrato si se solicita)
     if 'numero_contrato' in df_gen.columns:
         contrato_upper = numero_contrato.strip().upper()
