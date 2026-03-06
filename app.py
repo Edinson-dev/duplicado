@@ -497,6 +497,7 @@ def abrir_carpeta():
     except Exception as e:
         return jsonify({"local": False, "ruta": subcarpeta}), 200
 
+
 if __name__ == "__main__":
     print("\n" + "="*55)
     print("  Contratos · Modo Web Compartido")
