@@ -348,26 +348,30 @@ def procesar():
     })
 
 
-def cruzar_por_contrato(df_especifico, df_general, numero_contrato):
+def cruzar_por_contrato(df_especifico, df_general, numero_contrato, incluir_sin_contrato=False):
     """
     Cruza dos archivos por contrato:
     - df_especifico: archivo del contrato (ej: 450830) → manda
     - df_general: informe general (cm) → filtra por contrato y aporta facturas faltantes
     - numero_contrato: contrato a filtrar en df_general
+    - incluir_sin_contrato: si True, también incluye filas con SIN CONTRATO, NA, VARIOS, 0, etc.
     """
     # 1. Normalizar columnas de ambos
     df_esp = normalizar_columnas(df_especifico.copy())
     df_gen = normalizar_columnas(df_general.copy())
 
-     # 2. Filtrar general por contrato + facturas sin contrato
+    # 2. Filtrar general por contrato (+ sin contrato si se solicita)
     if 'numero_contrato' in df_gen.columns:
         contrato_upper = numero_contrato.strip().upper()
         col = df_gen['numero_contrato'].astype(str).str.strip().str.upper()
 
         mask_contrato = col == contrato_upper
-        mask_sin_contrato = col.isin({'SIN CONTRATO', 'NA', 'N/A', 'VARIOS', '0', 'NONE', ''})
 
-        df_gen_filtrado = df_gen[mask_contrato | mask_sin_contrato].copy()
+        if incluir_sin_contrato:
+            mask_sin_contrato = col.isin({'SIN CONTRATO', 'NA', 'N/A', 'VARIOS', '0', 'NONE', ''})
+            df_gen_filtrado = df_gen[mask_contrato | mask_sin_contrato].copy()
+        else:
+            df_gen_filtrado = df_gen[mask_contrato].copy()
     else:
         df_gen_filtrado = df_gen.copy()
 
@@ -462,8 +466,9 @@ def cruzar():
     """Cruza archivo específico (manda) con informe general filtrado por contrato."""
     carpeta  = carpeta_usuario(session["usuario"])
     data     = request.json
-    archivos = data.get("archivos", [])          # [ruta_especifico, ruta_general]
-    contrato = data.get("contrato", "").strip()  # número de contrato a filtrar
+    archivos             = data.get("archivos", [])           # [ruta_especifico, ruta_general]
+    contrato             = data.get("contrato", "").strip()   # número de contrato a filtrar
+    incluir_sin_contrato = data.get("incluir_sin_contrato", False)  # incluir SIN CONTRATO, NA, etc.
 
     if len(archivos) != 2:
         return jsonify({"error": "Selecciona exactamente 2 archivos: el específico y el informe general"}), 400
@@ -499,7 +504,7 @@ def cruzar():
             df_especifico, df_general = df2, df1
 
         # Cruzar
-        df_final, faltantes_agregados = cruzar_por_contrato(df_especifico, df_general, contrato)
+        df_final, faltantes_agregados = cruzar_por_contrato(df_especifico, df_general, contrato, incluir_sin_contrato)
         filas_orig = len(df_final)
 
         # Eliminar duplicados
