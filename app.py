@@ -359,12 +359,15 @@ def cruzar_por_contrato(df_especifico, df_general, numero_contrato):
     df_esp = normalizar_columnas(df_especifico.copy())
     df_gen = normalizar_columnas(df_general.copy())
 
-    # 2. Filtrar general por contrato
+     # 2. Filtrar general por contrato + facturas sin contrato
     if 'numero_contrato' in df_gen.columns:
-        df_gen_filtrado = df_gen[
-            df_gen['numero_contrato'].astype(str).str.strip().str.upper() ==
-            numero_contrato.strip().upper()
-        ].copy()
+        contrato_upper = numero_contrato.strip().upper()
+        col = df_gen['numero_contrato'].astype(str).str.strip().str.upper()
+
+        mask_contrato = col == contrato_upper
+        mask_sin_contrato = col.isin({'SIN CONTRATO', 'NA', 'N/A', 'VARIOS', '0', 'NONE', ''})
+
+        df_gen_filtrado = df_gen[mask_contrato | mask_sin_contrato].copy()
     else:
         df_gen_filtrado = df_gen.copy()
 

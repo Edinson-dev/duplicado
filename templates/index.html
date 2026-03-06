@@ -283,6 +283,10 @@ body{font-family:'Inter',sans-serif;background:#f0f4f8;color:#1e293b;display:fle
         <div class="field-lbl">🔖 Número de contrato a filtrar</div>
         <input type="text" id="input-contrato" placeholder="Ej: 450830-RAEC200001"
                style="width:100%;background:#f0faf8;border:1.5px solid #b2e8e0;border-radius:7px;padding:8px 10px;font-size:12px;color:#1a4a5c;outline:none;font-family:'Inter',sans-serif">
+        <label style="display:flex;align-items:center;gap:8px;margin-top:8px;padding:8px 10px;background:#fffbeb;border:1.5px solid #fde68a;border-radius:7px;cursor:pointer;user-select:none">
+          <input type="checkbox" id="chk-sin-contrato" style="width:15px;height:15px;accent-color:#d97706;cursor:pointer;flex-shrink:0">
+          <span style="font-size:11px;color:#92400e;font-weight:600;line-height:1.4">Incluir facturas sin contrato <span style="font-weight:400;color:#b45309">(SIN CONTRATO, NA, VARIOS, 0)</span></span>
+        </label>
       </div>
 
       <div class="drop-zone" id="drop-zone"
@@ -526,6 +530,7 @@ async function cruzar(){
   if(s.length !== 2){ toast('⚠️ Selecciona exactamente 2 archivos para cruzar','error',4000); return; }
   const contrato = document.getElementById('input-contrato').value.trim();
   if(!contrato){ toast('⚠️ Escribe el número de contrato a filtrar','error',4000); return; }
+  const incluirSinContrato = document.getElementById('chk-sin-contrato').checked;
 
   const pg=document.getElementById('prog'),pb=document.getElementById('prog-bar'),pp=document.getElementById('prog-pct');
   const p1=document.getElementById('ps1'),p2=document.getElementById('ps2'),p3=document.getElementById('ps3');
@@ -542,7 +547,7 @@ async function cruzar(){
   const t0=Date.now();
   try{
     const res = await fetch('/api/cruzar',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({archivos:s, contrato})});
+      body:JSON.stringify({archivos:s, contrato, incluir_sin_contrato: incluirSinContrato})});
     const data = await res.json();
     phase(85,'done','done','on'); await w(500);
     phase(100,'done','done','done'); await w(600);
