@@ -497,12 +497,12 @@ def abrir_carpeta():
     except Exception as e:
         return jsonify({"local": False, "ruta": subcarpeta}), 200
 
-
 if __name__ == "__main__":
     print("\n" + "="*55)
-    print("  DataCleanse Pro · Versión Híbrida")
+    print("  Contratos · Modo Web Compartido")
     print("="*55)
-    print("  Abre tu navegador en:  http://localhost:5000")
-    print("  Para cerrar presiona:  Ctrl + C")
+    print("  Servidor iniciando...")
     print("="*55 + "\n")
-    app.run(debug=False, port=5000, host="0.0.0.0")
+
+    port = int(os.environ.get("PORT", 8000))
+    app.run(debug=False, host="0.0.0.0", port=port)
