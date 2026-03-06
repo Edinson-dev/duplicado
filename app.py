@@ -124,27 +124,24 @@ def leer_archivo(ruta):
 
     for encoding in encodings:
         try:
-            # Leer primera línea para detectar separador real
-            with open(ruta, encoding=encoding) as f:
-                primera_linea = f.readline()
+            # Leer muestra para detectar separador
+            df_prueba = pd.read_csv(ruta, nrows=5, header=None, encoding=encoding)
 
-            # Contar ocurrencias de cada separador
-            conteos = {
-                '|':  primera_linea.count('|'),
-                ';':  primera_linea.count(';'),
-                ',':  primera_linea.count(','),
-                '\t': primera_linea.count('\t'),
-            }
-            sep = max(conteos, key=conteos.get)
-            if conteos[sep] == 0:
-                sep = ','
-
-            df = pd.read_csv(ruta, sep=sep, encoding=encoding, low_memory=False)
+            if df_prueba.shape[1] == 1:
+                primera_linea = str(df_prueba.iloc[0, 0]) if len(df_prueba) > 0 else ""
+                if '|' in primera_linea:
+                    df = pd.read_csv(ruta, sep='|', encoding=encoding, low_memory=False)
+                elif ';' in primera_linea:
+                    df = pd.read_csv(ruta, sep=';', encoding=encoding, low_memory=False)
+                else:
+                    df = pd.read_csv(ruta, sep=',', encoding=encoding, low_memory=False)
+            else:
+                df = pd.read_csv(ruta, sep=None, engine="python", encoding=encoding)
 
             # Limpiar espacios en nombres de columnas
             df.columns = df.columns.str.strip()
 
-            # Limpiar valores monetarios con formato ' $ 21.357 ' (formato colombiano)
+            # Limpiar valores monetarios colombianos: ' $ 21.357 ' → 21357
             for col in df.columns:
                 if df[col].dtype == object:
                     muestra = df[col].dropna().head(10).astype(str)
@@ -153,8 +150,8 @@ def leer_archivo(ruta):
                                    .str.strip()
                                    .str.replace('$', '', regex=False)
                                    .str.strip()
-                                   .str.replace('.', '', regex=False)   # quitar puntos de miles
-                                   .str.replace(',', '.', regex=False)  # coma decimal → punto
+                                   .str.replace('.', '', regex=False)
+                                   .str.replace(',', '.', regex=False)
                                    .replace('nan', None))
                         df[col] = pd.to_numeric(df[col], errors='coerce')
 
@@ -163,7 +160,6 @@ def leer_archivo(ruta):
         except (UnicodeDecodeError, Exception):
             continue
 
-    # Fallback — latin-1 acepta cualquier byte
     return pd.read_csv(ruta, sep=None, engine="python", encoding="latin-1")
 
 
