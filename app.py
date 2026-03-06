@@ -20,6 +20,7 @@ USUARIOS = {
     "admin":    generate_password_hash("admin123"),
     "usuario1": generate_password_hash("clave123"),
     "usuario2": generate_password_hash("clave456"),
+    "luis.vargas@saviasaludeps.com": generate_password_hash("Laurenv*2018."),
 }
 # ============================================================
 # CONFIGURACION
@@ -371,8 +372,6 @@ def cruzar_por_contrato(df_especifico, df_general, numero_contrato, incluir_sin_
             df_esp = df_esp[(col_esp == contrato_upper) | mask_sin_esp].copy()
         else:
             df_esp = df_esp[col_esp == contrato_upper].copy()
-
-
 
     # 2. Filtrar general por contrato (+ sin contrato si se solicita)
     if 'numero_contrato' in df_gen.columns:
