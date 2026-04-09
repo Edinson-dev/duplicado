@@ -410,7 +410,7 @@ def unificar():
     data     = request.json
     archivos = data.get("archivos", [])
 
-    if len(archivos) < 2:
+    if len(archivos) < 3:
         return jsonify({"error": "Selecciona al menos 2 archivos para unificar"}), 400
 
     # Carpetas de salida
